@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Practitioner Execution Workbook — PBU + AI Digital Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F5F4EF;
+  --border: #E5E3DB;
+  --border-strong: #D3D1C7;
+  --text: #2C2C2A;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --link: #185FA5;
+  --link-hover: #0C447C;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.6; -webkit-font-smoothing: antialiased; font-size: 15px;
+}
+.shell { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #3C3489 60%, #534AB7 100%);
+  color: #fff; padding: 2.5rem 2rem; border-radius: 14px;
+  margin-bottom: 1.5rem; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+  border-radius: 50%;
+}
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); font-weight: 500; margin-bottom: 0.5rem;
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 0.5rem; line-height: 1.1; position: relative;
+}
+.hero p { font-size: 1rem; color: rgba(255,255,255,0.85); max-width: 650px; position: relative; }
+.hero-meta {
+  margin-top: 1.25rem; display: flex; gap: 1.5rem; flex-wrap: wrap;
+  font-size: 13px; color: rgba(255,255,255,0.75); position: relative;
+}
+.hero-meta strong { color: #fff; font-weight: 500; }
+.hero-level-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(83,74,183,0.3); border: 1px solid rgba(83,74,183,0.5);
+  border-radius: 20px; padding: 4px 12px; font-size: 11px;
+  font-weight: 600; color: #C4BFFF; margin-bottom: 0.75rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+
+/* BUILD TRACKER */
+.build-tracker {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem; box-shadow: var(--shadow);
+}
+.build-tracker-title {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 0.75rem;
+}
+.build-bars { display: flex; flex-direction: column; gap: 8px; }
+.build-bar-row { display: flex; align-items: center; gap: 12px; }
+.build-bar-label {
+  font-size: 12px; font-weight: 600; color: var(--text-2);
+  min-width: 130px; font-family: 'JetBrains Mono', monospace;
+}
+.build-bar-track {
+  flex: 1; height: 8px; background: var(--surface-2);
+  border-radius: 4px; overflow: hidden; position: relative;
+}
+.build-bar-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.build-bar-pct {
+  font-size: 11px; font-weight: 600; color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace; min-width: 35px; text-align: right;
+}
+
+/* LEVEL TABS */
+.level-tabs {
+  display: flex; gap: 0; margin-bottom: 1.5rem;
+  background: var(--surface-2); border-radius: var(--radius);
+  padding: 4px; border: 1px solid var(--border);
+}
+.level-tab {
+  flex: 1; padding: 10px 16px; border: none; background: none;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--text-3); cursor: pointer; border-radius: 7px;
+  transition: all 0.2s; text-align: center;
+}
+.level-tab.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+.level-tab:hover:not(.active) { color: var(--text-2); }
+
+/* SEARCH */
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 16px; margin-bottom: 1.5rem;
+}
+.search-bar input {
+  border: none; background: none; flex: 1; font-family: inherit;
+  font-size: 14px; color: var(--text); outline: none;
+}
+.search-bar input::placeholder { color: var(--text-3); }
+.search-clear {
+  border: none; background: var(--surface-2); color: var(--text-2);
+  font-size: 12px; font-weight: 500; padding: 4px 10px;
+  border-radius: 4px; cursor: pointer; display: none; font-family: inherit;
+}
+
+/* PROGRESS */
+.progress {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 1.75rem; flex-wrap: wrap; padding: 0 0.5rem;
+}
+.progress-step { display: flex; align-items: center; }
+.progress-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--surface);
+  cursor: pointer; transition: all 0.2s; display: flex;
+  align-items: center; justify-content: center; font-size: 7px;
+}
+.progress-dot.current { width: 16px; height: 16px; }
+.progress-dot.past { background: var(--border-strong); border-color: var(--border-strong); color: #fff; }
+.progress-line { width: 8px; height: 2px; background: var(--border); }
+
+/* MODULE NAV */
+.module-nav {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px; margin-bottom: 2rem;
+}
+.module-btn {
+  padding: 10px 14px; border: 1px solid var(--border);
+  border-left-width: 3px; border-left-color: transparent;
+  border-radius: var(--radius-sm); background: none;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+  text-align: left; display: flex; align-items: center; gap: 10px;
+}
+.module-btn:hover { background: var(--surface-2); transform: translateX(2px); }
+.module-btn.active { background: var(--surface); box-shadow: var(--shadow); border-color: var(--border-strong); }
+.module-btn-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  font-weight: 600; color: var(--text-3); flex-shrink: 0;
+}
+.module-btn-title { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
+
+/* MODULE CONTENT */
+.module-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; box-shadow: var(--shadow);
+}
+.module-header {
+  padding: 1.75rem 2rem; border-bottom: 1px solid var(--border); position: relative;
+}
+.module-header-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  font-weight: 600; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+}
+.module-header h2 {
+  font-size: 1.6rem; font-weight: 600; letter-spacing: -0.01em;
+  margin-bottom: 0.4rem; line-height: 1.2;
+}
+.module-header p { font-size: 14px; color: var(--text-2); max-width: 720px; }
+.module-body { padding: 1.5rem 2rem 2rem; }
+
+/* INTRO BOX */
+.intro-box {
+  background: var(--surface-2); border-left: 3px solid var(--border-strong);
+  padding: 1rem 1.25rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 1.5rem; font-size: 14px; color: var(--text-2); line-height: 1.65;
+}
+
+/* BRIDGE BOX */
+.bridge-box {
+  background: linear-gradient(135deg, #EEEDFE 0%, #E6E4F7 100%);
+  border: 1px solid #C4BFFF; border-radius: var(--radius-sm);
+  padding: 14px 18px; margin: 1rem 0; font-size: 13.5px;
+  color: #3C3489; line-height: 1.55; display: flex; gap: 12px; align-items: flex-start;
+}
+.bridge-icon {
+  width: 24px; height: 24px; background: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 14px;
+}
+
+/* SECTION LABEL */
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-3);
+  margin: 1.75rem 0 0.85rem; display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* RULE BLOCK */
+.rule-block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left-width: 3px; border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 8px; transition: all 0.15s;
+}
+.rule-block:hover { border-color: var(--border-strong); }
+.rule-title {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  margin-bottom: 6px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+}
+.rule-title::after { content: '+'; font-size: 16px; color: var(--text-3); font-weight: 400; }
+.rule-block.open .rule-title::after { content: '−'; }
+.rule-body {
+  font-size: 13px; color: var(--text-2); line-height: 1.65;
+  display: none; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);
+}
+.rule-block.open .rule-body { display: block; }
+
+/* EXECUTION STEP */
+.exec-box {
+  background: linear-gradient(135deg, #E6F1FB 0%, #D4E8F9 100%);
+  border: 2px solid #4A90C4; border-radius: var(--radius-sm);
+  padding: 18px 20px; margin: 1.5rem 0 0.5rem;
+  font-size: 13.5px; color: #0C447C; line-height: 1.6;
+}
+.exec-box-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.exec-icon {
+  width: 28px; height: 28px; background: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 15px; font-weight: 700; color: #185FA5;
+  border: 2px solid #4A90C4;
+}
+.exec-label {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #185FA5;
+}
+.exec-box strong { font-weight: 700; color: #0C447C; }
+
+/* PILLAR TAG */
+.pillar-tag {
+  display: inline-flex; padding: 2px 8px; border-radius: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; margin-right: 4px;
+}
+.pillar-pbu { background: #EEEDFE; color: #534AB7; }
+.pillar-digital { background: #EAF3DE; color: #3B6D11; }
+.pillar-both { background: #FAEEDA; color: #854F0B; }
+
+/* DELIVERABLE CHECKLIST */
+.deliverables {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 18px; margin: 12px 0;
+}
+.deliverables-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 8px;
+}
+.deliverable-item {
+  display: flex; align-items: flex-start; gap: 8px; padding: 4px 0;
+  font-size: 13px; color: var(--text-2); line-height: 1.5;
+}
+.deliverable-check {
+  width: 16px; height: 16px; border: 2px solid var(--border-strong);
+  border-radius: 3px; flex-shrink: 0; margin-top: 2px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: transparent; transition: all 0.15s;
+}
+.deliverable-check.checked {
+  background: #3B6D11; border-color: #3B6D11; color: #fff;
+}
+
+/* CODE BLOCK */
+.code-block {
+  background: #111; color: #E5E3DB; border-radius: var(--radius-sm);
+  padding: 16px 18px; margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  line-height: 1.85; overflow-x: auto; border: 1px solid #2a2a2a;
+}
+
+/* COMPARE */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.compare-col {
+  background: var(--surface); border: 1px solid var(--border);
+  border-top-width: 3px; border-radius: var(--radius-sm); padding: 16px;
+}
+.compare-col-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.compare-point {
+  font-size: 13px; color: var(--text-2); padding: 4px 0; line-height: 1.5;
+  padding-left: 16px; position: relative;
+}
+.compare-point::before {
+  content: '→'; position: absolute; left: 0; color: var(--text-3); font-size: 12px;
+}
+
+/* RESOURCES */
+.resource-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+  margin-bottom: 8px; transition: all 0.15s;
+}
+.resource-card:hover { border-color: var(--border-strong); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.resource-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+.resource-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; line-height: 1.3; }
+.resource-sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); }
+.resource-desc { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 6px; }
+.resource-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--link); text-decoration: none; font-weight: 500;
+  padding: 4px 10px; background: var(--surface-2); border-radius: 6px; transition: all 0.15s;
+}
+.resource-link:hover { background: var(--link); color: #fff; }
+
+/* TAGS */
+.tag {
+  font-size: 10px; font-weight: 600; padding: 3px 8px;
+  border-radius: 10px; white-space: nowrap; flex-shrink: 0;
+  letter-spacing: 0.03em; text-transform: uppercase;
+}
+.tag-Official, .tag-Free { background: #E1F5EE; color: #085041; }
+.tag-GitHub { background: #E6F1FB; color: #0C447C; }
+.tag-Cert { background: #EEEDFE; color: #534AB7; }
+.tag-Guide { background: #FAEEDA; color: #854F0B; }
+.tag-Tool { background: #FAECE7; color: #993C1D; }
+
+/* ACTION BOX (original course style) */
+.action-box {
+  background: linear-gradient(135deg, #FAEEDA 0%, #FAC775 100%);
+  border: 1px solid #EF9F27; border-radius: var(--radius-sm);
+  padding: 14px 18px; margin: 1.5rem 0 0.5rem;
+  font-size: 13.5px; color: #633806; line-height: 1.55;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.action-icon {
+  width: 24px; height: 24px; background: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 14px;
+}
+.action-box strong { font-weight: 700; color: #412402; }
+
+/* SEARCH RESULTS */
+.search-result {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 18px;
+  margin-bottom: 10px; cursor: pointer; transition: all 0.15s;
+}
+.search-result:hover { border-color: var(--border-strong); transform: translateX(3px); }
+.search-result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.search-result-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.search-result-sub { font-size: 13px; color: var(--text-2); }
+.search-count {
+  font-size: 12px; color: var(--text-3); margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+
+@media (max-width: 700px) {
+  .shell { padding: 1rem; }
+  .hero { padding: 1.75rem 1.25rem; }
+  .hero h1 { font-size: 1.6rem; }
+  .module-header, .module-body { padding: 1.25rem; }
+  .module-nav { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .level-tabs { flex-direction: column; }
+}
+@media print {
+  body { background: white; }
+  .module-nav, .progress, .search-bar, .level-tabs { display: none; }
+  .module-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-level-badge">◆ Execution Workbook</div>
+  <div class="hero-eyebrow">AI Practitioner Course — Beginner + Intermediate</div>
+  <h1>Build While You Learn</h1>
+  <p>20 modules. Every homework assignment is a real execution step. By Module 20, your PBU content engine and AI Digital Products business are 66% operational — not theoretical, not planned, built.</p>
+  <div class="hero-meta">
+    <span><strong>20</strong> modules — Beginner then Intermediate</span>
+    <span><strong>2 pillars:</strong> PBU + AI Digital Products</span>
+    <span><strong>Target:</strong> 66% of systems built</span>
+  </div>
+</div>
+
+<!-- BUILD TRACKER -->
+<div class="build-tracker" id="buildTracker">
+  <div class="build-tracker-title">Business Build Progress</div>
+  <div class="build-bars">
+    <div class="build-bar-row">
+      <span class="build-bar-label">PBU Content</span>
+      <div class="build-bar-track"><div class="build-bar-fill" id="barPBU" style="width:0%;background:#534AB7;"></div></div>
+      <span class="build-bar-pct" id="pctPBU">0%</span>
+    </div>
+    <div class="build-bar-row">
+      <span class="build-bar-label">Digital Products</span>
+      <div class="build-bar-track"><div class="build-bar-fill" id="barDP" style="width:0%;background:#3B6D11;"></div></div>
+      <span class="build-bar-pct" id="pctDP">0%</span>
+    </div>
+    <div class="build-bar-row">
+      <span class="build-bar-label">Overall</span>
+      <div class="build-bar-track"><div class="build-bar-fill" id="barAll" style="width:0%;background:#854F0B;"></div></div>
+      <span class="build-bar-pct" id="pctAll">0%</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL TABS -->
+<div class="level-tabs">
+  <button class="level-tab active" id="tabBeg" onclick="setLevel('beginner')">Beginner — Modules 01–10</button>
+  <button class="level-tab" id="tabInt" onclick="setLevel('intermediate')">Intermediate — Modules 11–20</button>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+  <input type="text" id="search" placeholder="Search workbook — try 'brand voice', 'Etsy', 'newsletter', 'automation'..." autocomplete="off">
+  <button class="search-clear" id="clearBtn" style="display:none">Clear</button>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress" id="progress"></div>
+
+<!-- MODULE NAV -->
+<div class="module-nav" id="moduleNav"></div>
+
+<!-- CONTENT -->
+<div id="content"></div>
+
+</div>
+
+<script>
+const MODULES = [
+  // ═══════════════════════════════════════════
+  // BEGINNER LEVEL — MODULES 01-10
+  // ═══════════════════════════════════════════
+  {
+    id:"b01", num:"01", level:"beginner", title:"Knowledge base architecture",
+    sub:"Build the knowledge files that power your PBU content engine and AI Digital Products store",
+    color:"#534AB7", bg:"#EEEDFE",
+    pbu:10, dp:10,
+    sections:[
+      {type:"intro", text:"Before AI can produce content that sounds like you or create products that sell, it needs structured knowledge to work from. This module teaches you how AI retrieves information — and your homework is building the actual knowledge files for both PBU and your AI Digital Products business."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Markdown is the universal AI language", body:"Every AI platform reads markdown cleanly. Use headers (#, ##, ###) for hierarchy, bullet points for lists, and bold for emphasis. Start every knowledge file with a clear title and purpose statement. This applies to both your PBU content system and your Digital Products store — every product description, every content template, every brand rule starts as a structured markdown file."},
+        {title:"One concept per file, one source of truth", body:"Never duplicate information across files. If your brand voice rules live in 01-brand-voice.md, don't repeat them in your system prompt. Other files reference it: 'For tone rules, see 01-brand-voice.md.' Duplication creates contradictions. This applies to PBU (content voice) and Digital Products (product descriptions, listing copy)."},
+        {title:"Front-load the important information", body:"AI pays more attention to the beginning of files. Put your most critical rules, definitions, and constraints in the first 20% of every file. If your PBU brand voice has 5 non-negotiable rules, those go at the top — not buried after 3 paragraphs of context."},
+        {title:"File naming conventions matter", body:"Use numbered prefixes: 00-index.md, 01-brand-voice.md, 02-audience.md, 03-rules.md. This creates a predictable structure the AI can navigate. For Digital Products, mirror this: 00-store-index.md, 01-product-catalog.md, 02-listing-templates.md, 03-pricing-rules.md."},
+        {title:"Context windows determine your strategy", body:"Claude's context window is 200K tokens (~150K words). When you upload files to a Project, the model sees everything at once. For Custom GPTs, files get chunked into segments and only relevant chunks are pulled per query. Knowing this determines how you structure files: dense, focused files for Projects; clearly-headed sections for GPTs."}
+      ]},
+      {type:"label", text:"Execution step — build your real knowledge files"},
+      {type:"exec", pillar:"pbu", text:"<strong>PBU Knowledge Base — Build These 4 Files:</strong><br><br><strong>File 1: 00-pbu-index.md</strong> — File routing map. List every file in your PBU knowledge base with a one-line description of what it contains and when the AI should reference it.<br><br><strong>File 2: 01-pbu-brand-voice.md</strong> — Your PBU content voice. Include: sentence length preference, vocabulary (poker terms you always/never use), emotional tone (direct, analytical, no-fluff), 3-5 example sentences that nail your voice, phrases to avoid.<br><br><strong>File 3: 02-pbu-audience.md</strong> — Your target viewer. Include: who they are (recreational poker players wanting to improve), their pain points (tilt, bankroll mismanagement, study habits), the language they use, what motivates them.<br><br><strong>File 4: 03-pbu-rules.md</strong> — Hard constraints. Include: never recommend specific gambling sites, always include actionable takeaways, content length targets, CTA format rules."},
+      {type:"exec", pillar:"digital", text:"<strong>AI Digital Products Knowledge Base — Build These 4 Files:</strong><br><br><strong>File 1: 00-store-index.md</strong> — Master catalog of all planned products with names, prices, formats, and status (planned/created/listed/live).<br><br><strong>File 2: 01-product-templates.md</strong> — Templates for each product type: prompt pack structure (50+ prompts organized by function), PDF ebook structure (cover + 8-12 pages + CTA), Notion template specs, Canva template specs, spreadsheet structures.<br><br><strong>File 3: 02-listing-copy.md</strong> — Etsy and Gumroad listing templates: SEO-optimized title format, 5-section description template, tag strategy (13 tags per Etsy listing), pricing psychology rules.<br><br><strong>File 4: 03-brand-guidelines.md</strong> — Faceless brand identity: brand name, visual style (Canva mockup standards), tone of copy (authoritative but accessible), target customer language."},
+      {type:"deliverables", items:["00-pbu-index.md created and uploaded to Claude Project","01-pbu-brand-voice.md with 3+ voice examples","02-pbu-audience.md with specific pain points","03-pbu-rules.md with hard constraints","00-store-index.md with first 5 products cataloged","01-product-templates.md with prompt pack template","02-listing-copy.md with Etsy listing template","03-brand-guidelines.md with faceless brand identity"]}
+    ]
+  },
+  {
+    id:"b02", num:"02", level:"beginner", title:"Prompt engineering",
+    sub:"Write the production prompts that generate PBU scripts and create digital products",
+    color:"#993C1D", bg:"#FAECE7",
+    pbu:15, dp:15,
+    sections:[
+      {type:"intro", text:"A prompt is an instruction set. A production prompt is an instruction set that produces consistent, high-quality output every time. This module teaches prompt structure — and your homework is writing the actual prompts you'll use daily to produce PBU content and create digital products for sale."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Role + Context + Task + Format + Constraints = production prompt", body:"Every production prompt needs all five components. Role: 'You are a poker content strategist.' Context: 'I run a YouTube channel called PBU targeting recreational players.' Task: 'Write a video script about tilt management.' Format: 'Use the YouTube Script Format template from the knowledge base.' Constraints: 'Under 10 minutes read time, statement hook (not a question), one specific example.'"},
+        {title:"System prompts vs conversation prompts", body:"System prompts define who the AI is and how it behaves — they persist across the entire conversation. Conversation prompts are individual requests within that context. Your PBU system prompt defines the content strategist. Your conversation prompts are 'write a script about bankroll management.' Never put session-specific instructions in the system prompt."},
+        {title:"Examples are the most powerful prompt component", body:"Showing the AI 2-3 examples of your desired output teaches it more than 500 words of instructions. For PBU: include 2 gold-standard script openings. For Digital Products: include 1 complete product description that converts. These examples become the AI's reference point for every output."},
+        {title:"Negative examples prevent common failures", body:"'Don't use generic language' is vague. 'Never write hooks like: Have you ever wondered about tilt? Instead, write hooks like: Tilt cost me $2,400 last month.' Showing what NOT to do is as important as showing what TO do. Build a 'never do this' section into every production prompt."},
+        {title:"Version your prompts — they're business assets", body:"Every prompt you write should have a version number and a changelog. 'PBU-Script-Prompt-v3 — Changed: added hook constraint (statements only), removed example #2 (too long), tightened CTA format.' When a prompt produces bad output, you can trace back to what changed."}
+      ]},
+      {type:"label", text:"Execution step — write your production prompts"},
+      {type:"exec", pillar:"pbu", text:"<strong>PBU Production Prompts — Write These 3:</strong><br><br><strong>Prompt 1: PBU Script Generator (system prompt)</strong> — Define the AI as your PBU content strategist. Include role, context (channel details, audience, content style), format requirements (hook → setup → lesson → example → CTA), voice rules (reference 01-pbu-brand-voice.md), and 2 example script openings from your best content.<br><br><strong>Prompt 2: PBU Repurpose Prompt</strong> — Takes a completed script and generates: 3 social media posts (different angle each), 1 Twitter/X thread (5-7 tweets), 1 newsletter clip (key takeaway + CTA). Include format templates for each output type.<br><br><strong>Prompt 3: PBU Topic Research Prompt</strong> — Generates 10 topic ideas based on your topic map, current trends, and audience pain points. Output format: Topic Title | Hook Angle | Target Keyword | Content Type (tutorial/story/analysis)."},
+      {type:"exec", pillar:"digital", text:"<strong>AI Digital Products Prompts — Write These 3:</strong><br><br><strong>Prompt 1: Product Creator (system prompt)</strong> — Define the AI as your product creation engine. Include: niche (AI tools for small business), product types (prompt packs, PDF ebooks, Notion templates, Canva templates, spreadsheets), quality standards, pricing logic ($6.99–$29.99 range), and 1 example of a complete product outline.<br><br><strong>Prompt 2: Etsy Listing Generator</strong> — Takes a product name and generates: SEO title (front-load keywords), 5-section description (hook, what's included, who it's for, how to use, guarantee), 13 tags, and 3 thumbnail text overlay options.<br><br><strong>Prompt 3: Newsletter Issue Generator</strong> — Takes a topic and generates: subject line (under 50 chars), preview text, hook paragraph, 3 content sections, embedded product/affiliate links, CTA. Format: Beehiiv-compatible HTML structure."},
+      {type:"deliverables", items:["PBU Script Generator system prompt (v1) — tested with 3 scripts","PBU Repurpose Prompt — tested on 1 real script","PBU Topic Research Prompt — generated 10 topics","Product Creator system prompt (v1) — tested creating 2 products","Etsy Listing Generator — tested on Product #1","Newsletter Issue Generator — tested on 1 draft issue"]}
+    ]
+  },
+  {
+    id:"b03", num:"03", level:"beginner", title:"Custom AI builds",
+    sub:"Build the PBU Content Strategist GPT and the Digital Product Creator Project",
+    color:"#085041", bg:"#E1F5EE",
+    pbu:25, dp:25,
+    sections:[
+      {type:"intro", text:"Claude Projects, Custom GPTs, and Gemini Gems are reusable AI systems — not one-off chats. You configure them once with your system prompt, knowledge files, and tools, then use them repeatedly. This module teaches the build process — and your homework is creating the actual AI systems you'll use every day."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Projects, GPTs, and Gems — same concept, different platforms", body:"Claude Projects = system prompt + knowledge files + conversation history. Custom GPTs = instructions + knowledge + actions + capabilities. Gemini Gems = instructions + files + Google Workspace integration. Build on the platform where you'll use it most. For PBU content production: start with Claude Project (deeper reasoning). For Digital Products: start with Custom GPT (faster iteration, broader sharing)."},
+        {title:"Knowledge files + system prompt = the complete system", body:"Your system prompt tells the AI how to behave. Your knowledge files give it what to know. Neither works well alone. A great system prompt with no knowledge files produces generic output. Great knowledge files with a weak system prompt produce inconsistent output. You built both in Modules 01-02 — now you assemble them."},
+        {title:"Test with 10 real inputs before trusting it", body:"After building your Project/GPT, run 10 real-world prompts through it. Score each output on a 1-5 scale. If average score is below 4, something in your system prompt or knowledge files needs fixing. Common issue: the AI ignores your voice rules because they're buried too deep in the knowledge file. Fix: move voice rules to the system prompt itself."},
+        {title:"Input routing — teach the AI to handle different request types", body:"Your PBU system should handle: 'write a script about X' (content creation mode), 'review this script' (editing mode), 'suggest topics for next week' (strategy mode), and 'repurpose this into social posts' (repurpose mode). Define each mode explicitly in your system prompt so the AI switches behavior based on input type."}
+      ]},
+      {type:"label", text:"Execution step — build your AI systems"},
+      {type:"exec", pillar:"pbu", text:"<strong>Build the PBU Content Strategist:</strong><br><br>Open Claude and create a new Project called 'PBU Content Engine.' Upload all 4 knowledge files from Module 01. Paste your PBU Script Generator system prompt from Module 02 as the Project instructions. Add input routing for 4 modes: Script Creation, Script Review, Topic Research, Content Repurpose.<br><br>Test it with these 10 inputs:<br>1. Write a script about tilt management<br>2. Write a script about bankroll basics<br>3. Review [paste an existing script]<br>4. Suggest 5 topics for next week<br>5. Repurpose [paste a script] into 3 social posts<br>6. Write a script about pre-session warmups<br>7. Generate a Twitter thread from [topic]<br>8. Write a newsletter clip about [topic]<br>9. Compare two topic ideas for engagement potential<br>10. Write a short-form hook for [topic]<br><br>Score each output 1-5. Fix any score below 4 before moving on."},
+      {type:"exec", pillar:"digital", text:"<strong>Build the AI Product Creator:</strong><br><br>Option A (Claude): Create a Project called 'AI Digital Products Factory.' Upload your 4 store knowledge files. Paste your Product Creator system prompt.<br><br>Option B (ChatGPT): Build a Custom GPT called 'AI Product Creator.' Paste instructions, upload knowledge files, enable Code Interpreter and DALL-E.<br><br>Test by creating these 3 products from the Week 1 plan:<br>1. AI Prompt Pack for Small Business ($9.99) — generate the full 50+ prompt PDF content<br>2. AI Tool Stack Guide 2026 ($7.99) — generate the ebook outline + first 3 chapters<br>3. 30-Day AI Social Media Content Calendar ($14.99) — generate the spreadsheet structure + 30 days of prompts<br><br>Score each product output. Adjust the system prompt until products are 90%+ ready for sale after one generation pass."},
+      {type:"deliverables", items:["PBU Content Engine Project live in Claude with all knowledge files","10 test inputs scored, average 4+/5","Product Creator GPT/Project live and configured","Products #1, #3, #4 from Week 1 plan drafted via AI","Input routing working for all 4 PBU modes"]}
+    ]
+  },
+  {
+    id:"b04", num:"04", level:"beginner", title:"Connections, tools & function calling",
+    sub:"Map the tool connections that link your AI to Etsy, Gumroad, Beehiiv, YouTube, and Google Sheets",
+    color:"#185FA5", bg:"#E6F1FB",
+    pbu:30, dp:30,
+    sections:[
+      {type:"intro", text:"AI becomes powerful when it connects to your actual tools — reading your content calendar, checking Etsy analytics, pulling YouTube data. This module teaches how connections work and your homework is mapping every integration point for both businesses."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Connections = AI reading from or writing to external tools", body:"Read connections: AI pulls data from Google Sheets (your content calendar), Etsy (sales data), YouTube (analytics). Write connections: AI creates Asana tasks, drafts emails, updates spreadsheets. Every connection has a permission scope — know exactly what your AI can read vs write."},
+        {title:"OAuth, API keys, and webhooks — the three connection types", body:"OAuth: 'Sign in with Google' — the AI gets permission to access your account. API keys: a secret password that lets the AI call a service. Webhooks: a URL that receives notifications when something happens (new sale, new subscriber). Most no-code connections use OAuth. You'll use all three as you build out."},
+        {title:"Start with read-only connections", body:"Never give AI write access to customer-facing systems on day one. Start by letting it read your content calendar, read your Etsy sales data, read your YouTube analytics. Once you trust the outputs, add write access incrementally. A bad AI write to Etsy (wrong price, wrong description) costs real money."},
+        {title:"Google Sheets is your universal data layer", body:"Both PBU and Digital Products benefit from a Google Sheets hub: content calendar, product catalog, revenue tracker, topic map. AI can read sheets directly via Gemini Gems (native) or via Zapier/Make (any platform). Sheets become the connective tissue between your AI systems."}
+      ]},
+      {type:"label", text:"Execution step — map and build your connections"},
+      {type:"exec", pillar:"both", text:"<strong>Build Your Connection Map + Data Layer:</strong><br><br><strong>Step 1: Create your Google Sheets hub</strong><br>• Sheet 1: PBU Content Calendar (Topic | Status | Publish Date | Format | Keyword | Score)<br>• Sheet 2: Digital Product Catalog (Product # | Name | Price | Format | Platform | Status | Sales)<br>• Sheet 3: Revenue Tracker (Date | Stream | Amount | Source)<br>• Sheet 4: Newsletter Calendar (Issue # | Title | Publish Date | Open Rate | Click Rate)<br><br><strong>Step 2: Document your Connection Permission Map</strong><br>Create a one-page doc listing every tool both businesses use, what AI can read vs write, and which connection method (OAuth, API, webhook). Include: Etsy (read: analytics, listings; write: none yet), Gumroad (read: sales; write: none yet), Beehiiv (read: subscriber count, open rates; write: none yet), YouTube (read: analytics; write: none yet), Google Sheets (read+write: all sheets), Canva (read: templates; write: create designs).<br><br><strong>Step 3: Connect Gemini to Google Sheets</strong><br>Create a Gemini Gem with access to your Google Sheets hub. Test: 'What topics are scheduled for this week?' and 'What products have sold this month?' Verify it reads correctly."},
+      {type:"deliverables", items:["Google Sheets hub created with 4 sheets","PBU Content Calendar populated with first 4 weeks of topics","Digital Product Catalog populated with 20 planned products from the 90-day plan","Connection Permission Map document created","Gemini Gem connected to Google Sheets and tested"]}
+    ]
+  },
+  {
+    id:"b05", num:"05", level:"beginner", title:"Automation & no-code workflows",
+    sub:"Build the automations that run your content pipeline and product delivery without you",
+    color:"#854F0B", bg:"#FAEEDA",
+    pbu:35, dp:40,
+    sections:[
+      {type:"intro", text:"Automation is where AI skills become business systems. A prompt is a one-time interaction. An automation is a prompt that runs without you. This module teaches automation architecture — and your homework is building the first real automations for both businesses."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Trigger → Action → Filter — the universal pattern", body:"Every automation follows this: Trigger (something happens) → Action (something is done) → Filter (optional logic). Example: New Gumroad sale (trigger) → Add row to Revenue Tracker sheet (action) → Only if amount > $20 (filter). Master this pattern and you can build anything."},
+        {title:"AI steps go in the middle, not at the edges", body:"The most reliable pattern: Tool triggers → AI processes → Tool receives output. Example: New content topic added to calendar (trigger) → Claude drafts script outline (AI step) → Outline saved to Google Drive (action). The AI is the processor, not the initiator or the final action."},
+        {title:"Zapier for simple chains, Make for complex logic", body:"Zapier: faster setup for linear A→B→C workflows. Make (formerly Integromat): handles branching, loops, error handling, and conditional logic. Start with Zapier for your first 5 automations, then graduate to Make for complex workflows."},
+        {title:"Always include a human review step for high-stakes outputs", body:"Never let AI publish content, send emails to customers, or update product listings without human review — at least until you've validated the automation over 50+ runs. 'Draft and hold for approval' is always safer than 'draft and send.'"}
+      ]},
+      {type:"label", text:"Execution step — build your first automations"},
+      {type:"exec", pillar:"pbu", text:"<strong>PBU Automation #1: Content Pipeline Trigger</strong><br><br>Build in Zapier:<br>• Trigger: New row added to PBU Content Calendar (Google Sheets) with status 'scheduled'<br>• Action 1: Claude generates a script outline based on the topic, format, and keyword<br>• Action 2: Outline saved to a Google Drive folder called 'PBU Script Drafts'<br>• Action 3: Slack/email notification that a new draft is ready for review<br><br>This means: every time you add a topic to your calendar and mark it 'scheduled,' a script outline appears in your Drive within minutes. You review and refine — the AI did the first draft."},
+      {type:"exec", pillar:"digital", text:"<strong>Digital Products Automation #1: Sale Notification + Tracker</strong><br><br>Build in Zapier:<br>• Trigger: New sale on Gumroad<br>• Action 1: Add sale details to Revenue Tracker sheet (product, amount, date, customer email hash)<br>• Action 2: If product is a bundle, tag the row as 'bundle' for analytics<br>• Action 3: Send yourself a Slack/email summary<br><br><strong>Digital Products Automation #2: Newsletter → Product Promo</strong><br>• Trigger: New Beehiiv issue published<br>• Action: Update a Google Sheet row with issue title, date, and linked product. This builds your newsletter→product attribution data over time."},
+      {type:"deliverables", items:["PBU Content Pipeline automation live in Zapier — tested with 3 topics","Gumroad Sale Tracker automation live — tested with a test purchase","Newsletter → Product tracker automation live","All automations named descriptively with version numbers","Human review step confirmed in PBU content automation"]}
+    ]
+  },
+  {
+    id:"b06", num:"06", level:"beginner", title:"AI content systems",
+    sub:"Deploy the PBU content pipeline and the Digital Products newsletter engine",
+    color:"#3B6D11", bg:"#EAF3DE",
+    pbu:45, dp:50,
+    sections:[
+      {type:"intro", text:"You don't need more content ideas — you need a system that turns one idea into 10 pieces of content in one session. This module is about deploying the production machine for both PBU (video content) and Digital Products (newsletter + YouTube content)."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"One idea → one long-form → many short-form", body:"Every content idea starts as a single long-form asset (PBU video script, newsletter deep-dive). AI then breaks it into: 3-5 social posts, a thread, a quote graphic caption, a newsletter segment, and a short-form video hook. You create once, AI repurposes 5x."},
+        {title:"Batch production beats daily creation", body:"Dedicate one 2-3 hour session per week to producing 4-5 complete pieces. Use your Custom GPT/Project for this — feed it your topic map, get all outputs in one sitting. For Digital Products: batch newsletter issues. For PBU: batch video scripts."},
+        {title:"Content voice files are your competitive moat", body:"Your brand voice document captures what makes your content yours. Without it, AI content sounds like AI. With it, it sounds like you. You built this in Module 01 — now it powers every piece of content your system produces."},
+        {title:"Build a format library, not individual prompts", body:"Instead of a prompt for each video, build a Format Library: YouTube Script Format, Twitter Thread Format, Newsletter Format, Short-Form Hook Format. Each format is a reusable template. The topic changes — the format stays consistent."}
+      ]},
+      {type:"label", text:"Execution step — deploy your content systems"},
+      {type:"exec", pillar:"pbu", text:"<strong>Deploy the PBU Content Engine:</strong><br><br><strong>Step 1: Build your Content Format Library</strong> — Create 4 templates as knowledge files:<br>• YouTube Script Template (hook → setup → 3 lesson sections → example → CTA)<br>• Social Post Template (hook + insight + CTA, under 280 chars)<br>• Thread Template (tweet 1: hook | tweets 2-5: key points | tweet 6: CTA + link)<br>• Newsletter Clip Template (1 key takeaway + context + link to full video)<br><br><strong>Step 2: Run your first batch production session</strong><br>Open your PBU Content Engine Project. Feed it 4 topics from your content calendar. Generate all 4 scripts in one session. Score each against your rubric. Revise any scoring below 4/5.<br><br><strong>Step 3: Run the repurpose batch</strong><br>Take the 4 approved scripts. Run the Repurpose Prompt. Generate 12 social posts, 4 threads, 4 newsletter clips. Review all outputs. Schedule via your content calendar."},
+      {type:"exec", pillar:"digital", text:"<strong>Deploy the Digital Products Content System:</strong><br><br><strong>Step 1: Write your first 4 newsletter issues</strong> — Use the Newsletter Issue Generator prompt. Topics from the 90-day plan:<br>• Issue #1: 'The 5 AI tools that replaced a $4,000/month employee' → CTA: Product #1<br>• Issue #2: '3 ChatGPT prompts that write better emails than your marketing team' → CTA: Product #2<br>• Issue #3: 'How to build an AI chatbot for your business in 30 minutes' → CTA: Affiliate (Voiceflow)<br>• Issue #4: 'I automated my entire social media — here's the exact system' → CTA: Affiliate (Make.com)<br><br><strong>Step 2: Set up Beehiiv</strong> — Create account, configure branding (faceless), write 3-email welcome sequence, add newsletter signup link to all Etsy listings and Gumroad pages. Turn on Beehiiv Boosts.<br><br><strong>Step 3: Build the YouTube script batch system</strong> — Write first 4 faceless YouTube scripts using the Product Creator. Topics from Week 9 plan. Configure ElevenLabs voiceover test."},
+      {type:"deliverables", items:["PBU Format Library (4 templates) uploaded to Project","First batch of 4 PBU scripts generated, scored, and approved","12 social posts + 4 threads generated from scripts","Beehiiv account live with welcome sequence","First 4 newsletter issues drafted","Newsletter signup linked from all Etsy/Gumroad listings","First 2 YouTube scripts written for Digital Products channel","Content calendar updated with all scheduled content"]}
+    ]
+  },
+  {
+    id:"b07", num:"07", level:"beginner", title:"MCP servers",
+    sub:"Spec and scaffold the MCP servers that connect Claude to your content calendar and product catalog",
+    color:"#993556", bg:"#FBEAF0",
+    pbu:50, dp:52,
+    sections:[
+      {type:"intro", text:"MCP (Model Context Protocol) is Anthropic's open standard for connecting AI to external tools and data. Think of it as USB-C for AI. When you build an MCP server, you decide what tools Claude can call, what data it can access, and how it responds. You're building these with Claude Code — hands-on."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Host, Client, Server — the architecture", body:"Host = Claude Desktop or Claude.ai. Client = the MCP layer built into Claude that manages connections. Server = the thing you build — a small program that exposes tools, resources, or prompts. You build the server. Claude handles the rest."},
+        {title:"Three primitives — tools, resources, prompts", body:"Tools: actions Claude can trigger ('get upcoming topics,' 'add new product'). Resources: read-only data ('content calendar,' 'product catalog'). Prompts: reusable instruction templates ('draft a newsletter,' 'create a listing'). Every MCP server exposes some combination of these three."},
+        {title:"The non-coder path is real", body:"You become the architect — you define what tools exist, what data they return, what actions they perform. Claude Code writes the implementation. Your job: specify the requirements in plain English, test the output, iterate. This is 100% achievable without traditional coding skills."},
+        {title:"Start local (stdio), go remote later", body:"Local servers run on your machine and connect via Claude Desktop. Remote servers run in the cloud and connect via URL from anywhere. Start local for development and testing. The Intermediate modules will cover remote deployment."}
+      ]},
+      {type:"label", text:"Execution step — spec and scaffold your MCP servers"},
+      {type:"exec", pillar:"pbu", text:"<strong>PBU Content Calendar MCP Server — Spec + Scaffold:</strong><br><br><strong>Step 1: Write the plain-English spec:</strong><br><br>MCP SERVER: PBU Content Calendar<br>Transport: stdio (local, Claude Desktop)<br>Data Source: Google Sheets API<br><br>TOOLS:<br>• get_topics — Returns all topics. Optional filter by status (idea/scheduled/scripted/published)<br>• add_topic — Adds a new topic with title, category, target date<br>• update_status — Changes a topic's status<br><br>RESOURCES:<br>• content_calendar — Current state of the full calendar<br><br><strong>Step 2: Use Claude Code to scaffold</strong><br>Open Claude Code. Paste your spec. Say: 'Build this MCP server using the TypeScript SDK. Connect to Google Sheets via the API.' Test every tool in MCP Inspector before connecting to Claude Desktop."},
+      {type:"exec", pillar:"digital", text:"<strong>Digital Product Catalog MCP Server — Spec + Scaffold:</strong><br><br><strong>Step 1: Write the plain-English spec:</strong><br><br>MCP SERVER: AI Digital Products Store<br>Transport: stdio (local)<br>Data Source: Google Sheets API<br><br>TOOLS:<br>• get_products — Returns all products. Optional filter by status (planned/created/listed/live) or price range<br>• add_product — Adds a new product with name, price, format, description<br>• get_revenue — Returns revenue data. Optional filter by date range or stream (Etsy/Gumroad/Beehiiv/Affiliate/YouTube)<br>• get_top_sellers — Returns top N products by sales volume<br><br>RESOURCES:<br>• product_catalog — Full catalog with all product details<br>• revenue_summary — Current month revenue across all streams<br><br><strong>Step 2: Scaffold with Claude Code</strong><br>Same process — spec in, working server out. Test all tools in MCP Inspector."},
+      {type:"deliverables", items:["PBU MCP server spec document written","PBU MCP server scaffolded via Claude Code","All 3 PBU tools tested in MCP Inspector","Digital Products MCP server spec document written","Digital Products MCP server scaffolded via Claude Code","All 4 Digital Products tools tested in MCP Inspector","Both servers connecting to Google Sheets hub"]}
+    ]
+  },
+  {
+    id:"b08", num:"08", level:"beginner", title:"AI for business ops",
+    sub:"Build the operational systems that run both businesses — revenue tracking, workflow mapping, and the AI proposal framework",
+    color:"#5F5E5A", bg:"#F1EFE8",
+    pbu:55, dp:58,
+    sections:[
+      {type:"intro", text:"This module is about applying AI to the specific operations of your two businesses. Not theory — actual workflow mapping, revenue tracking, and operational automation. The person who builds the first working AI workflow owns the narrative."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Map the workflow before you automate it", body:"For every repeating task, document: trigger (what starts it), steps (what happens), output (what's produced), frequency (how often), time cost (how long). Then identify where AI slots in. Don't automate a broken workflow — fix it first, then automate."},
+        {title:"Revenue tracking is non-negotiable from Day 1", body:"Track every dollar across all 6 revenue streams from the first sale. Your Revenue Tracker sheet (Module 04) is the single source of truth. Weekly: export data, feed to Claude, get analysis. Monthly: comprehensive review of what's working and what's not. This data drives every business decision."},
+        {title:"The before-and-after measurement framework", body:"For every AI workflow: measure time before AI, time after AI, quality before, quality after. Example: 'Product listing creation took 45 minutes manually. With AI draft + human review, it takes 12 minutes. At 7 products/week, that's 3.85 hours saved weekly.' Specific numbers drive decisions."},
+        {title:"Deploy before you present", body:"Never pitch an AI workflow to yourself or a partner without a working demo. Build a prototype in 2 hours, show it doing real work, then decide whether to scale it. Deployed systems create results. Plans create meetings."}
+      ]},
+      {type:"label", text:"Execution step — build your business operations"},
+      {type:"exec", pillar:"both", text:"<strong>Build Your Operational Dashboard:</strong><br><br><strong>Step 1: Workflow Audit</strong><br>List every repeating workflow across both businesses. For each, calculate weekly time cost (frequency × minutes per instance). Sort by total time. Your top 5 are your AI automation targets.<br><br>PBU workflows to audit: topic research, script writing, script review, social post creation, thumbnail design, YouTube description writing, newsletter clip creation, performance analysis.<br><br>Digital Products workflows to audit: product creation, listing writing, listing optimization, newsletter writing, subscriber growth activities, YouTube script writing, voiceover production, revenue reconciliation, affiliate tracking.<br><br><strong>Step 2: Build the Weekly Operations Prompt</strong><br>Create a prompt that takes your Google Sheets data (content calendar, product catalog, revenue tracker) and generates a weekly operations report: what's on track, what's behind, what to prioritize this week, revenue vs target.<br><br><strong>Step 3: Create Production SOPs</strong><br>Document the exact process for your 3 highest-frequency workflows as one-page SOPs: What it does, How to use it, What can go wrong, How to fix it. These become training material and insurance against context loss."},
+      {type:"deliverables", items:["Complete workflow audit for both businesses (15+ workflows listed)","Top 5 AI automation targets identified with time-cost calculations","Weekly Operations Report prompt written and tested","3 production SOPs documented (1-page each)","Revenue tracking active with first data points logged","Before-and-after metrics captured for at least 1 automated workflow"]}
+    ]
+  },
+  {
+    id:"b09", num:"09", level:"beginner", title:"Agentic AI & multi-agent systems",
+    sub:"Design the AI agents that handle content research, product creation, and newsletter production",
+    color:"#534AB7", bg:"#EEEDFE",
+    pbu:58, dp:60,
+    sections:[
+      {type:"intro", text:"Agentic AI is where AI stops being a tool you prompt and becomes a system that operates. An agent can plan, use tools, and execute multi-step tasks autonomously. This module teaches agent design — and your homework is designing the actual agents that will run your content and product creation."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Assistive vs agentic — the key difference", body:"Assistive AI: you prompt, it responds, you prompt again. Agentic AI: you give a goal, it plans the steps, executes them using tools, evaluates results, and iterates. Claude Cowork and Claude Code are both agentic. Your PBU content system should become agentic — you give it a topic, it researches, writes, scores, revises, and repurposes."},
+        {title:"Subagents — specialized workers for complex tasks", body:"Instead of one AI doing everything, create specialized subagents: a Research Agent (finds trending topics), a Content Agent (writes scripts), a Review Agent (scores quality), a Repurpose Agent (converts to social). Each has a narrow focus and its own instructions."},
+        {title:"Start supervised, move to autonomous", body:"Don't give agents full autonomy on day one. Start with 'do this task and show me before proceeding.' Once you trust the output pattern (10+ successful runs), reduce checkpoints. Full autonomy is earned through proven reliability."},
+        {title:"Context management is the hard problem", body:"Agents lose context over long operations. Solution: structured handoffs between subagents (each gets a summary, not the full history), explicit state tracking (write progress to a file), and clear completion criteria (the agent knows when to stop)."}
+      ]},
+      {type:"label", text:"Execution step — design your agent systems"},
+      {type:"exec", pillar:"pbu", text:"<strong>Design the PBU Agent Fleet:</strong><br><br>Define 3 agents on paper (this is the spec, not the build — the Intermediate modules will implement):<br><br><strong>Agent 1: PBU Research Agent</strong><br>• Goal: Find trending poker topics and content gaps<br>• Inputs: Topic map, competitor channel list, current calendar<br>• Tools: Web search, YouTube API (via MCP), content calendar (via MCP)<br>• Output: 5 ranked topic recommendations with hook angles<br>• Evaluation: Does each topic have search volume + unique angle?<br>• Stopping condition: 5 topics scored 4+/5 on relevance<br><br><strong>Agent 2: PBU Content Agent</strong><br>• Goal: Produce a complete, approved script<br>• Inputs: Topic + format template + brand voice<br>• Output: Script scoring 4+/5 on all rubric dimensions<br>• Evaluation: Self-score against rubric, revise if below threshold<br><br><strong>Agent 3: PBU Repurpose Agent</strong><br>• Goal: Convert approved script into 5 distribution-ready assets<br>• Inputs: Approved script + format templates<br>• Output: 3 social posts, 1 thread, 1 newsletter clip"},
+      {type:"exec", pillar:"digital", text:"<strong>Design the Digital Products Agent Workflow:</strong><br><br><strong>Agent 1: Product Creator Agent</strong><br>• Goal: Create a complete, sale-ready digital product<br>• Inputs: Product name, price, format, target audience from catalog<br>• Tools: Product templates (knowledge file), Canva API (future), Google Docs<br>• Output: Complete product content + Etsy listing copy + Gumroad page copy<br>• Evaluation: Product completeness checklist (all sections present, formatting correct, no placeholder text)<br><br><strong>Agent 2: Newsletter Agent</strong><br>• Goal: Produce 2 newsletter issues per week<br>• Inputs: Content topic bank, this week's product promotions, affiliate links<br>• Output: 2 complete Beehiiv-ready newsletter issues<br>• Evaluation: Subject line under 50 chars, 3+ content sections, 1 product CTA, 1 affiliate link minimum"},
+      {type:"deliverables", items:["PBU Research Agent spec documented (goal, inputs, tools, output, evaluation, stopping condition)","PBU Content Agent spec documented","PBU Repurpose Agent spec documented","Digital Products Creator Agent spec documented","Newsletter Agent spec documented","All 5 agents include 3 failure scenarios with recovery actions","Trust ladder defined for each agent (supervision → review → audit)"]}
+    ]
+  },
+  {
+    id:"b10", num:"10", level:"beginner", title:"AI SME positioning",
+    sub:"Launch your first products, publish your first content, and establish your digital presence",
+    color:"#085041", bg:"#E1F5EE",
+    pbu:60, dp:65,
+    sections:[
+      {type:"intro", text:"Everything in Modules 1-9 made you capable. This module makes you operational. Being an AI practitioner isn't about knowing the most — it's about deploying the most. Your homework here is the actual launch: first products live, first content published, first revenue tracked."},
+      {type:"label", text:"Core concepts"},
+      {type:"rules", items:[
+        {title:"Deploy before you optimize", body:"Perfect is the enemy of shipped. Your first 5 Etsy listings don't need to be perfect — they need to be live. Your first PBU script doesn't need to be your best work — it needs to be published. Optimization happens after launch with real data, not before launch with assumptions."},
+        {title:"Document every win in a running log", body:"Start your AI Win Log today: date, what you built, estimated time saved, revenue impact. Update it weekly. This becomes your portfolio, your proof-of-work, and eventually your consulting credential. 'I built an AI content system that produces 4 scripts/week in 2 hours' is more powerful than any certification."},
+        {title:"Connect wins to business metrics", body:"Nobody cares about AI — they care about results. Always translate: 'AI-generated product listings' → 'reduced listing creation time by 73%, enabling 7 products/week instead of 2.' 'AI newsletter system' → 'producing 8 issues/month with 35% open rates.' Metrics, not features."},
+        {title:"Build external credibility in parallel", body:"LinkedIn posts about what you're building. One post per week about an AI win: 'Problem → AI solution → Result → What I learned.' These posts build your personal brand, attract other AI practitioners, and create evidence for future consulting. The AI Digital Products business IS your case study."}
+      ]},
+      {type:"label", text:"Execution step — launch day"},
+      {type:"exec", pillar:"digital", text:"<strong>Digital Products Launch Checklist (Week 1-2 of 90-Day Plan):</strong><br><br>☐ Etsy seller account created and configured<br>☐ Gumroad account created and configured<br>☐ Store branding complete (logo, banner, brand name — faceless)<br>☐ Products #1-5 created using your Product Creator AI:<br>&emsp;• AI Prompt Pack for Small Business ($9.99)<br>&emsp;• ChatGPT Email Template System ($12.99)<br>&emsp;• AI Tool Stack Guide 2026 ($7.99)<br>&emsp;• 30-Day AI Social Media Content Calendar ($14.99)<br>&emsp;• Notion Business Dashboard Template ($19.99)<br>☐ All 5 listed on Etsy with AI-generated SEO titles, descriptions, 13 tags each<br>☐ All 5 listed on Gumroad with clean landing pages<br>☐ Affiliate programs joined: Notion, Canva, Beehiiv, Make.com<br>☐ Free lead magnet created: '10 Free AI Prompts Every Business Owner Needs'"},
+      {type:"exec", pillar:"pbu", text:"<strong>PBU Content Launch Checklist:</strong><br><br>☐ PBU Content Engine Project producing scripts at 4+/5 quality<br>☐ Content Format Library (4 templates) uploaded and tested<br>☐ First batch of 4 scripts generated and approved<br>☐ Repurpose batch complete (12 social posts, 4 threads, 4 clips)<br>☐ Content calendar populated for next 4 weeks<br>☐ First PBU video published (or scheduled)<br>☐ First LinkedIn post about your AI content system published<br>☐ AI Win Log started with at least 3 entries"},
+      {type:"deliverables", items:["5 digital products live on Etsy + Gumroad","4 PBU scripts approved and in production pipeline","12+ social media posts scheduled","LinkedIn profile updated with AI practitioner positioning","AI Win Log started with 3+ entries","Revenue Tracker actively logging (even if $0 so far)","Free lead magnet live on Gumroad for email capture","Content calendar shows 4 weeks of planned content"]}
+    ]
+  },
+
+  // ═══════════════════════════════════════════
+  // INTERMEDIATE LEVEL — MODULES 11-20
+  // ═══════════════════════════════════════════
+  {
+    id:"i01", num:"11", level:"intermediate", title:"Knowledge base architecture",
+    sub:"Expand to tiered knowledge systems, test retrieval, and build niche-specific product line KBs",
+    color:"#534AB7", bg:"#EEEDFE",
+    pbu:62, dp:67,
+    sections:[
+      {type:"intro", text:"You built your first knowledge files in Module 01. Now you need to understand why retrieval sometimes fails — and how to design tiered knowledge systems that scale as both businesses grow. Your homework is expanding your knowledge architecture to handle the full product catalog and multi-format content system."},
+      {type:"bridge", text:"Foundations from Module 01 you should already have: markdown formatting, concept-based chunking, file routing map, brand voice file, and a basic 4-file architecture for each business. This module builds directly on those patterns."},
+      {type:"label", text:"Intermediate concepts"},
+      {type:"rules", items:[
+        {title:"Tiered knowledge architecture — always/sometimes/session", body:"Tier 1 (always in context): brand voice, rules, format library — these never change. Tier 2 (retrieval-based): topic archive, competitor analysis, performance data — pulled when relevant. Tier 3 (session-specific): this week's analytics, draft in progress, trending topics CSV. Structuring tiers prevents context window bloat."},
+        {title:"The 10-question retrieval audit", body:"After setting up your knowledge base, write 10 questions it should be able to answer — one per file or concept. Ask each in a new conversation. Score: did it find the right info? Did it cite the right file? Below 8/10 = structural problem. Run this audit after every knowledge base change."},
+        {title:"Platform-specific retrieval behavior", body:"Claude Projects stuff all files into context — the model sees everything. Custom GPTs use RAG — files get chunked and only relevant chunks are pulled. This means: for Claude, use fewer, denser files. For GPTs, use clearly-headed sections with consistent terminology."},
+        {title:"Deduplication — one source of truth per concept", body:"If your pricing rules appear in both your product catalog and your listing templates, the model might pull conflicting info. Every fact lives in exactly one file. Other files reference it but never duplicate it."}
+      ]},
+      {type:"label", text:"Execution step — expand your knowledge architecture"},
+      {type:"exec", pillar:"both", text:"<strong>Build the Expanded Knowledge Architecture:</strong><br><br><strong>PBU — Add Tier 2 Files:</strong><br>• 04-content-formats.md — All format templates (moved from separate files into one structured reference)<br>• 05-topic-map.md — Complete topic database with keywords, angles, and priority scores<br>• 06-examples.md — 5-8 gold-standard examples of your best content by type<br><br><strong>Digital Products — Add Niche Product Line KBs:</strong><br>• 04-niche-real-estate.md — Real estate agent products: prompts, templates, pricing, listing angles<br>• 05-niche-fitness.md — Fitness coach products: same structure<br>• 06-niche-ecommerce.md — E-commerce seller products: same structure<br>• 07-newsletter-archive.md — All published newsletter issues with open rates and click data<br><br><strong>Both — Run the 10-Question Audit:</strong><br>Write 10 retrieval test questions for each business. Run them. Score them. Fix any below 8/10. Document results."},
+      {type:"deliverables", items:["PBU expanded to 7-file tiered architecture","Digital Products expanded with 3 niche-specific product line KBs","Newsletter archive file started","10-question retrieval audit completed for PBU (score: __/10)","10-question retrieval audit completed for Digital Products (score: __/10)","Any retrieval failures diagnosed and fixed"]}
+    ]
+  },
+  {
+    id:"i02", num:"12", level:"intermediate", title:"Prompt engineering",
+    sub:"Build evaluation rubrics, cross-platform prompt deployment, and prompt versioning systems",
+    color:"#993C1D", bg:"#FAECE7",
+    pbu:63, dp:68,
+    sections:[
+      {type:"intro", text:"Your Module 02 prompts work. Now they need to work consistently, across platforms, and with measurable quality. This module adds evaluation rubrics, A/B testing, and cross-platform deployment — turning your prompts into reliable production systems."},
+      {type:"bridge", text:"Foundations from Module 02: role+context+task+format+constraints structure, system vs conversation prompts, positive and negative examples, prompt versioning. This module adds measurement and consistency."},
+      {type:"label", text:"Intermediate concepts"},
+      {type:"rules", items:[
+        {title:"Evaluation rubrics turn subjective quality into numbers", body:"Build a scoring rubric for every output type. PBU Script Rubric: Hook Strength (1-5), Voice Accuracy (1-5), Structure Adherence (1-5), Example Quality (1-5), CTA Clarity (1-5). Product Listing Rubric: Title SEO (1-5), Description Completeness (1-5), Tag Relevance (1-5), Conversion Language (1-5). Score every AI output before using it."},
+        {title:"Cross-platform prompt deployment", body:"Take your master prompt and create platform-specific versions. Claude version: use XML tags, detailed nuanced rules. ChatGPT version: simplify rules, add more guardrails. Gemini version: optimize for Google Workspace context. Same intent, different execution per platform."},
+        {title:"A/B testing prompts — the feedback loop", body:"Run the same task through 2 prompt variants. Score both outputs. The higher-scoring variant becomes the new default. Do this monthly. Small prompt improvements compound: a prompt that scores 3.8/5 today can score 4.5/5 in 8 weeks of iterative testing."},
+        {title:"The session summary pattern", body:"After every production session, generate a structured summary: what was completed, decisions made, what's in progress, next session tasks. This summary becomes the starting context for your next session — preventing context loss across conversations."}
+      ]},
+      {type:"label", text:"Execution step — systematize your prompt quality"},
+      {type:"exec", pillar:"both", text:"<strong>Build Your Evaluation + Versioning System:</strong><br><br><strong>Step 1: Create scoring rubrics</strong><br>• PBU Content Scoring Rubric (5 dimensions, 1-5 scale each)<br>• Digital Product Quality Rubric (4 dimensions, 1-5 scale each)<br>• Etsy Listing Scoring Rubric (4 dimensions, 1-5 scale each)<br>• Newsletter Issue Rubric (4 dimensions, 1-5 scale each)<br><br><strong>Step 2: Score your last 5 outputs</strong><br>Go back to the content and products you created in Modules 03-06. Score 5 PBU scripts and 5 digital product outputs against the rubrics. Calculate average scores. Identify the lowest-scoring dimension — that's where your prompt needs improvement.<br><br><strong>Step 3: Deploy cross-platform</strong><br>Take your PBU Script Generator prompt (Claude version) and create a ChatGPT Custom GPT version and a Gemini Gem version. Run the same 3 topics through all 3 platforms. Score the outputs. Document which platform produces the best output for which task type.<br><br><strong>Step 4: Start your Prompt Changelog</strong><br>Create a document tracking every prompt version with: version number, date, what changed, why, before/after scores."},
+      {type:"deliverables", items:["4 scoring rubrics created (PBU content, product quality, Etsy listing, newsletter)","5 PBU outputs scored with average calculated","5 Digital Product outputs scored with average calculated","Lowest-scoring dimension identified and prompt updated to fix it","PBU prompt deployed on 3 platforms (Claude, ChatGPT, Gemini)","Cross-platform comparison documented","Prompt Changelog started with all current versions"]}
+    ]
+  },
+  {
+    id:"i03", num:"13", level:"intermediate", title:"Custom AI builds",
+    sub:"Build specialized GPT fleets, add input routing, and deploy the full product creation pipeline",
+    color:"#085041", bg:"#E1F5EE",
+    pbu:65, dp:70,
+    sections:[
+      {type:"intro", text:"Module 03 gave you one GPT/Project per business. Now you build specialized fleets — multiple AI systems that each handle a specific task type, with clear handoff protocols between them."},
+      {type:"bridge", text:"Foundations from Module 03: working Claude Project and Custom GPT, knowledge files uploaded, system prompts configured, 10-input testing protocol. This module adds specialization and coordination."},
+      {type:"label", text:"Execution step — build your GPT fleets"},
+      {type:"exec", pillar:"pbu", text:"<strong>Build the PBU GPT Fleet (3 specialized builds):</strong><br><br><strong>GPT #1: PBU Strategist</strong> — Input: 'What should I create this week?' Output: 5 ranked topics with hook angles, keywords, and content type. Knowledge: topic map, performance data, competitor analysis.<br><br><strong>GPT #2: PBU Writer</strong> — Input: approved topic + format. Output: complete script scoring 4+/5. Knowledge: brand voice, format library, examples. This is your Module 03 build, refined.<br><br><strong>GPT #3: PBU Distributor</strong> — Input: approved script. Output: 3 social posts + 1 thread + 1 newsletter clip + YouTube description + tags. Knowledge: format templates, platform-specific rules.<br><br><strong>Handoff Protocol:</strong> Strategist picks topics → you approve → Writer produces scripts → you approve → Distributor creates all distribution assets. Each GPT gets only the knowledge it needs — no bloat."},
+      {type:"exec", pillar:"digital", text:"<strong>Build the Digital Products GPT Fleet (3 specialized builds):</strong><br><br><strong>GPT #1: Product Factory</strong> — Input: product spec (name, price, format, audience). Output: complete product content ready for Canva design. Knowledge: product templates, niche KBs, pricing rules.<br><br><strong>GPT #2: Listing Machine</strong> — Input: product name + features. Output: Etsy listing (title, description, 13 tags) + Gumroad page copy. Knowledge: listing templates, SEO rules, competitor listing analysis.<br><br><strong>GPT #3: Newsletter Engine</strong> — Input: topic + product to promote + affiliate links. Output: complete Beehiiv-ready newsletter issue. Knowledge: newsletter archive, high-engagement formats, subscriber data.<br><br>Validate each GPT with 10 test runs. Score outputs against rubrics from Module 12."},
+      {type:"deliverables", items:["3 PBU GPTs built and each tested with 10 inputs","3 Digital Products GPTs built and each tested with 10 inputs","Handoff protocol documented for PBU fleet","Handoff protocol documented for Digital Products fleet","All GPTs scoring 4+/5 average on respective rubrics","Products #6-12 from Week 2 plan created using Product Factory GPT"]}
+    ]
+  },
+  {
+    id:"i04", num:"14", level:"intermediate", title:"Connections, tools & function calling",
+    sub:"Design tool schemas, build API integrations, and connect your AI to live business data",
+    color:"#185FA5", bg:"#E6F1FB",
+    pbu:66, dp:72,
+    sections:[
+      {type:"intro", text:"Module 04 mapped your connections. Now you design custom tool schemas, handle API failures gracefully, and build integrations that run without supervision."},
+      {type:"bridge", text:"Foundations from Module 04: Google Sheets hub, connection permission map, Gemini Gem connected to Sheets. This module adds production-grade tool design."},
+      {type:"label", text:"Execution step — build production integrations"},
+      {type:"exec", pillar:"both", text:"<strong>Build Production Tool Integrations:</strong><br><br><strong>Step 1: Design tool schemas for your MCP servers</strong><br>Take the MCP specs from Module 07. For each tool, write the formal schema: name, description (detailed enough for the model to know exactly when to use it), parameters (with types and descriptions), return format, and disambiguation rules ('Only use get_revenue when asked about specific financial data. For general business health questions, use the weekly report resource instead.').<br><br><strong>Step 2: Add error handling rules</strong><br>For every tool, define what happens when it fails: API timeout → retry once, then report error. Auth failure → alert user to re-authenticate. Malformed response → log the error and fall back to cached data. These rules go in your system prompt.<br><br><strong>Step 3: Build the Etsy analytics integration</strong><br>Connect your AI to Etsy analytics via Zapier or Make. Automation: daily pull of listing views, favorites, and sales → update Google Sheets → available to Claude via MCP server. Now when you ask 'which products are performing best?', Claude answers with real data.<br><br><strong>Step 4: Build the Beehiiv analytics integration</strong><br>Same pattern for newsletter: pull subscriber count, open rates, click rates → update Google Sheets → available via MCP."},
+      {type:"deliverables", items:["Formal tool schemas written for all MCP server tools","Error handling rules added to system prompts","Etsy analytics → Google Sheets automation live","Beehiiv analytics → Google Sheets automation live","Claude can answer 'which products are selling best?' with real data","Claude can answer 'what were last week's newsletter open rates?' with real data"]}
+    ]
+  },
+  {
+    id:"i05", num:"15", level:"intermediate", title:"Automation & no-code workflows",
+    sub:"Build cross-platform automations with error handling, branching, and the full content-to-revenue pipeline",
+    color:"#854F0B", bg:"#FAEEDA",
+    pbu:68, dp:75,
+    sections:[
+      {type:"intro", text:"Module 05 built your first simple automations. Now you build the complex, multi-step workflows that connect your entire ecosystem: YouTube drives newsletter subscribers, newsletter sells products, products fund more YouTube production."},
+      {type:"bridge", text:"Foundations from Module 05: Zapier automations for content pipeline and sale tracking. This module adds branching logic, error handling, and cross-platform orchestration."},
+      {type:"label", text:"Execution step — build the ecosystem automations"},
+      {type:"exec", pillar:"both", text:"<strong>Build the Cross-Platform Revenue Flywheel:</strong><br><br><strong>Automation 1: YouTube → Newsletter Funnel</strong> (Make)<br>• Trigger: New YouTube video published<br>• Action 1: AI generates newsletter teaser from video content<br>• Action 2: Create Beehiiv draft with teaser + video link + product recommendation<br>• Action 3: Schedule for next newsletter slot<br>• Error handling: if video title parsing fails, fall back to manual draft notification<br><br><strong>Automation 2: Newsletter → Product Attribution</strong> (Zapier)<br>• Trigger: Beehiiv link clicked (product link)<br>• Action: Log click to attribution sheet (newsletter issue # → product → click timestamp)<br>• Purpose: know which newsletter content drives which product sales<br><br><strong>Automation 3: Product Performance → Content Ideas</strong> (Make)<br>• Trigger: Weekly schedule (Sunday night)<br>• Action 1: Pull top-selling products from Revenue Tracker<br>• Action 2: Claude generates 3 content ideas based on what's selling<br>• Action 3: Add ideas to PBU Content Calendar + Digital Products topic bank<br>• Purpose: your best-selling products automatically inspire your next content<br><br><strong>Automation 4: Full Content Batch Pipeline</strong> (Make, complex)<br>• Trigger: Manual (you click 'run batch')<br>• Step 1: Pull this week's topics from content calendar<br>• Step 2: For each topic, Claude generates script draft<br>• Step 3: Save all drafts to Google Drive<br>• Step 4: Run repurpose pass on each draft → social posts saved to scheduling queue<br>• Step 5: Notification with batch summary<br>• Error handling: if any script fails quality check, flag for manual review"},
+      {type:"deliverables", items:["YouTube → Newsletter funnel automation live in Make","Newsletter → Product attribution tracking live","Weekly product-to-content idea generator live","Full content batch pipeline built (even if not fully automated yet)","All automations named with version numbers","Error handling tested on each automation","Documentation: one-page SOP for each automation"]}
+    ]
+  },
+  {
+    id:"i06", num:"16", level:"intermediate", title:"AI content systems",
+    sub:"Performance feedback loops, content scoring at scale, and the newsletter optimization engine",
+    color:"#3B6D11", bg:"#EAF3DE",
+    pbu:70, dp:78,
+    sections:[
+      {type:"intro", text:"Module 06 deployed your content systems. Now you optimize them with data. Performance feedback loops, content scoring at scale, and the closed-loop system where last week's data improves this week's content."},
+      {type:"bridge", text:"Foundations from Module 06: format library, batch production, newsletter system, repurpose workflow. This module adds measurement and optimization."},
+      {type:"label", text:"Execution step — close the feedback loop"},
+      {type:"exec", pillar:"both", text:"<strong>Build the Closed-Loop Content System:</strong><br><br><strong>Step 1: Performance Analysis Prompt</strong><br>Create a prompt that takes your performance data (YouTube analytics export, Beehiiv open/click rates, Etsy sales data) and generates: top vs bottom performer comparison, what high-performing hooks/topics/formats have in common, 3 specific adjustments for next week's batch. Test with your actual data from the last 30 days.<br><br><strong>Step 2: Score at Scale</strong><br>Score ALL content produced in the last 4 weeks against your rubrics (Module 12). Calculate: average score by dimension, average score by content type, trend over time. Identify your single biggest quality gap and update the relevant prompt to fix it.<br><br><strong>Step 3: Newsletter Optimization</strong><br>Analyze newsletter data: which subjects get highest open rates, which content types get highest click rates, which product links get most clicks. Feed to Claude: 'Based on this data, optimize my newsletter formula.' Update your Newsletter Engine GPT with the findings.<br><br><strong>Step 4: Content Calendar as System Input</strong><br>Export your content calendar as CSV. Upload to your PBU Project weekly. Now the AI can reference your pipeline when suggesting topics, identifying gaps, and planning batches. This transforms your calendar from a scheduling tool into an AI system input."},
+      {type:"deliverables", items:["Performance Analysis Prompt written and tested with real data","All content from last 4 weeks scored against rubrics","Quality trend documented (improving/declining/stable)","Biggest quality gap identified and prompt updated","Newsletter data analyzed and Newsletter Engine GPT updated","Content calendar CSV being uploaded weekly to AI systems","Products #13-20 from Week 3 plan created and listed","Bundles created: Starter Bundle ($24.99) and Pro Bundle ($49.99)"]}
+    ]
+  },
+  {
+    id:"i07", num:"17", level:"intermediate", title:"MCP servers",
+    sub:"Deploy, test, and connect your MCP servers to Claude Desktop for live business operations",
+    color:"#993556", bg:"#FBEAF0",
+    pbu:72, dp:80,
+    sections:[
+      {type:"intro", text:"Module 07 specced and scaffolded your MCP servers. Now you deploy them locally, connect them to Claude Desktop, and start using them in daily operations. Every tool gets battle-tested with real data."},
+      {type:"bridge", text:"Foundations from Module 07: MCP specs written, servers scaffolded via Claude Code, tools tested in MCP Inspector. This module adds deployment and daily use."},
+      {type:"label", text:"Execution step — deploy and use your MCP servers"},
+      {type:"exec", pillar:"both", text:"<strong>Get Your MCP Servers Into Daily Production:</strong><br><br><strong>Step 1: Deploy locally via Claude Desktop</strong><br>Configure Claude Desktop to connect to both MCP servers (PBU Content Calendar + Digital Products Catalog). Verify all tools work in live conversation: 'What topics are scheduled this week?' → server returns real data from your Google Sheet.<br><br><strong>Step 2: Daily operations integration</strong><br>For one full week, use your MCP-connected Claude for all business operations:<br>• Morning: 'What's on my content calendar today?' (PBU server)<br>• Morning: 'Any products need listing updates?' (Products server)<br>• Production: 'Mark topic X as scripted' (PBU server)<br>• End of day: 'Add these 3 new topic ideas' (PBU server)<br>• Weekly: 'Show me this week's revenue summary' (Products server)<br><br><strong>Step 3: Debug and harden</strong><br>After a week of use, document every failure: wrong data returned, tool not called when expected, slow responses. Fix each issue. This is the reliability phase — your servers need to work every time, not just during demos.<br><br><strong>Step 4: Add the newsletter resource</strong><br>Extend your Products MCP server with a newsletter resource that exposes: upcoming newsletter schedule, last 5 issue performance data, subscriber count. Now Claude can say: 'Your newsletter open rate has been declining — consider testing shorter subject lines.'"},
+      {type:"deliverables", items:["Both MCP servers connected to Claude Desktop","All tools verified with live data (not test data)","1 full week of daily MCP usage logged","Bug/failure log created with fixes applied","Newsletter resource added to Products server","Claude answering real-time business questions via MCP"]}
+    ]
+  },
+  {
+    id:"i08", num:"18", level:"intermediate", title:"AI for business ops",
+    sub:"ROI measurement, full workflow audit, revenue optimization, and scaling operations",
+    color:"#5F5E5A", bg:"#F1EFE8",
+    pbu:73, dp:82,
+    sections:[
+      {type:"intro", text:"Module 08 built your initial operations. Now you measure, optimize, and scale. This is where you turn data into decisions and systems into revenue."},
+      {type:"bridge", text:"Foundations from Module 08: workflow audit, weekly operations prompt, 3 SOPs, revenue tracking. This module adds ROI measurement and scaling."},
+      {type:"label", text:"Execution step — measure and optimize operations"},
+      {type:"exec", pillar:"both", text:"<strong>Full Business Operations Review + Optimization:</strong><br><br><strong>Step 1: ROI Measurement for Every AI Workflow</strong><br>For each automation and AI system you've built (Modules 01-17), calculate: time spent before AI, time spent after AI, quality before, quality after. Create a one-page ROI summary:<br>• Product creation: __ min before → __ min after = __% improvement<br>• Script writing: __ min before → __ min after = __% improvement<br>• Newsletter production: __ min before → __ min after = __% improvement<br>• Listing creation: __ min before → __ min after = __% improvement<br><br><strong>Step 2: Revenue Analysis (vs 90-Day Plan targets)</strong><br>Pull all revenue data. Compare to plan milestones: first sale (Week 2-3), first $100 month (Week 4), $500/month (Week 6-8). Identify which revenue streams are ahead/behind. Feed data to Claude: 'Analyze my revenue vs plan. What's working? What needs acceleration?'<br><br><strong>Step 3: Scaling Decision Framework</strong><br>Based on data: which products should you create more of (top sellers)? Which should you discontinue (no sales)? Which newsletter topics drive the most product sales? Which YouTube formats get the most engagement? Build a data-driven Month 4-6 plan.<br><br><strong>Step 4: Document Production SOPs for Scale</strong><br>Update all SOPs with actual process times, tool configurations, and common failure fixes. These SOPs should be detailed enough that someone else could run your systems."},
+      {type:"deliverables", items:["ROI summary for every AI workflow (actual numbers)","Revenue vs 90-day plan comparison completed","Top-selling products identified with expansion plan","Underperforming products identified with discontinue/reposition decision","Data-driven Month 4-6 scale plan created","All production SOPs updated with real process data","YouTube channel launched with first 4 videos (if in Week 9+ of plan)"]}
+    ]
+  },
+  {
+    id:"i09", num:"19", level:"intermediate", title:"Agentic AI fundamentals",
+    sub:"Implement single-agent workflows, test the trust ladder, and build structured handoff protocols",
+    color:"#534AB7", bg:"#EEEDFE",
+    pbu:75, dp:85,
+    sections:[
+      {type:"intro", text:"Module 09 designed your agents on paper. Now you implement and test them. This is where your agent specs become working systems — each validated through the trust ladder (supervised → reviewed → audited)."},
+      {type:"bridge", text:"Foundations from Module 09: 5 agent specs with goals, inputs, tools, outputs, evaluation criteria, stopping conditions, and failure scenarios. This module implements and validates them."},
+      {type:"label", text:"Execution step — build and test your agents"},
+      {type:"exec", pillar:"pbu", text:"<strong>Implement the PBU Content Agent (single-agent, supervised):</strong><br><br>Using Claude Code, build a workflow that:<br>1. Takes a topic from your content calendar (via MCP server)<br>2. Researches the topic (via web search or knowledge base)<br>3. Generates a script following your format template<br>4. Self-scores against your rubric<br>5. If score < 4 on any dimension, automatically revises that section<br>6. Outputs the final script with scores<br><br><strong>Trust Ladder Test:</strong><br>• Runs 1-5: Full supervision — review every output before it's saved<br>• Runs 6-15: Review before finalization — agent produces, you approve<br>• Runs 16+: Periodic audit — agent operates, you spot-check 1 in 5<br><br>Log every run: topic, score, revision needed (yes/no), time to complete, quality assessment."},
+      {type:"exec", pillar:"digital", text:"<strong>Implement the Product Creator Agent (single-agent, supervised):</strong><br><br>Using Claude Code, build a workflow that:<br>1. Takes a product spec from your catalog (via MCP server)<br>2. Generates complete product content based on the product type template<br>3. Generates Etsy listing copy (title, description, 13 tags)<br>4. Generates Gumroad page copy<br>5. Self-evaluates against product quality rubric<br>6. If any section is incomplete or below threshold, revises<br>7. Outputs: product file + listing copy + Gumroad copy<br><br><strong>Trust Ladder Test:</strong><br>Same progression: 5 supervised → 10 reviewed → periodic audit.<br>Use this agent to create the remaining products from the 90-day plan that aren't yet built.<br><br><strong>Milestone: By the end of this module, 20+ products should be live."},
+      {type:"deliverables", items:["PBU Content Agent implemented and completing runs","Trust ladder log with 10+ documented runs for PBU agent","Product Creator Agent implemented and completing runs","Trust ladder log with 10+ documented runs for Product agent","20+ digital products live across Etsy and Gumroad","Agent failure scenarios tested and recovery actions validated","Structured handoff document template created for multi-session work"]}
+    ]
+  },
+  {
+    id:"i10", num:"20", level:"intermediate", title:"AI SME positioning",
+    sub:"Full system review, credential roadmap, and the transition to Advanced — with 66% of both businesses operational",
+    color:"#085041", bg:"#E1F5EE",
+    pbu:78, dp:88,
+    sections:[
+      {type:"intro", text:"This is the capstone. By now, your PBU content engine and AI Digital Products business should be at 66%+ operational. This module is about measuring where you are, documenting what you've built, positioning for growth, and preparing for the Advanced course where Jarvis enters the picture."},
+      {type:"label", text:"The 66% operational checkpoint"},
+      {type:"rules", items:[
+        {title:"What '66% operational' means — PBU", body:"Your PBU content system produces scripts via AI at 4+/5 quality. You have a format library, content calendar, and repurpose workflow. Batch production works. Content is publishing on a regular schedule. Performance data is being tracked and fed back into the system. MCP server connects Claude to your content calendar. The remaining 34%: advanced analytics, multi-agent orchestration, and scale optimizations come in the Advanced course."},
+        {title:"What '66% operational' means — AI Digital Products", body:"You have 20+ products live on Etsy and Gumroad. Your newsletter is publishing 2x/week with growing subscribers. YouTube scripts are being produced (or channel is live). Revenue is being tracked across all streams. AI agents handle product creation and listing optimization. The remaining 34%: YouTube monetization, paid traffic, premium flagship products, paid newsletter tier, and full-scale automation come in Months 4-6 and the Advanced course."},
+        {title:"Your credential and growth roadmap", body:"Certifications to pursue: Anthropic Academy (Claude 101, AI Fluency, Cowork, MCP — free), Google AI Professional Certificate ($49/mo), Asana Workflow Specialist ($299). Each builds on what you've learned. Target: all foundational certs within 3 months."},
+        {title:"The Advanced course adds Jarvis", body:"The Advanced Execution Workbook will add the Jarvis project: voice interface, tool access via MCP, persistent memory, and autonomous task execution. Everything you've built in Modules 01-20 is infrastructure that Jarvis will connect to — your content calendar, product catalog, and business operations become Jarvis's tools."}
+      ]},
+      {type:"label", text:"Execution step — capstone review and positioning"},
+      {type:"exec", pillar:"both", text:"<strong>The Full System Audit:</strong><br><br><strong>Step 1: Inventory Everything You've Built</strong><br>Document every system, automation, GPT, MCP server, knowledge file, and SOP across both businesses. This is your AI portfolio — the evidence of what you can do.<br><br><strong>Step 2: Calculate Total ROI</strong><br>Sum up: total time saved per week across all AI systems, total products created via AI, total content pieces produced via AI, total revenue generated. These are the numbers that matter.<br><br><strong>Step 3: Identify the Gaps</strong><br>What's not working yet? What's still manual that should be automated? What agents need more training runs? What products aren't selling? Be honest — the Advanced course will address these gaps.<br><br><strong>Step 4: Publish Your First Case Study</strong><br>Write a LinkedIn post or blog entry: 'I built an AI-powered digital products business from scratch in [X] weeks. Here's what happened: [metrics].' This is your SME positioning — you're not talking about AI theoretically, you're showing results.<br><br><strong>Step 5: Prepare for Advanced</strong><br>Review the Jarvis brief. List the specific tools and data sources Jarvis will need to connect to (hint: it's everything you built in Modules 01-20). The Advanced workbook will build Jarvis on top of this foundation."},
+      {type:"deliverables", items:["Complete system inventory document (every AI asset across both businesses)","Total ROI calculation with specific numbers","Gap analysis: what's working, what's not, what's next","First public case study published (LinkedIn post minimum)","AI Win Log updated with all 20 modules' wins","Credential roadmap with target dates for each cert","Advanced course preparation notes: Jarvis integration points identified","MILESTONE: 66%+ of both businesses operational and producing results"]}
+    ]
+  }
+];
+
+let activeId = "b01";
+let activeLevel = "beginner";
+let searchQuery = "";
+
+const moduleNav = document.getElementById("moduleNav");
+const progressEl = document.getElementById("progress");
+const contentEl = document.getElementById("content");
+const searchInput = document.getElementById("search");
+const clearBtn = document.getElementById("clearBtn");
+
+function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function setLevel(lv){
+  activeLevel=lv;
+  document.getElementById("tabBeg").className="level-tab"+(lv==="beginner"?" active":"");
+  document.getElementById("tabInt").className="level-tab"+(lv==="intermediate"?" active":"");
+  const filtered=MODULES.filter(m=>m.level===lv);
+  if(filtered.length&&!filtered.find(m=>m.id===activeId)){activeId=filtered[0].id;}
+  renderAll();
+}
+
+function getFiltered(){return searchQuery?MODULES:MODULES.filter(m=>m.level===activeLevel);}
+
+function renderNav(){
+  const mods=getFiltered();
+  moduleNav.innerHTML=mods.map(m=>`
+    <button class="module-btn ${m.id===activeId?'active':''}" data-id="${m.id}" style="${m.id===activeId?'border-left-color:'+m.color:''}">
+      <span class="module-btn-num" style="${m.id===activeId?'color:'+m.color:''}">${m.num}</span>
+      <span class="module-btn-title">${m.title}</span>
+    </button>`).join("");
+  moduleNav.querySelectorAll(".module-btn").forEach(b=>b.addEventListener("click",()=>{activeId=b.dataset.id;const m=MODULES.find(x=>x.id===activeId);if(m)activeLevel=m.level;renderAll();scrollTo({top:0,behavior:"smooth"});}));
+}
+
+function renderProgress(){
+  const mods=getFiltered();
+  const ci=mods.findIndex(m=>m.id===activeId);
+  progressEl.innerHTML=mods.map((m,i)=>{
+    const cur=m.id===activeId,past=i<ci;
+    return `${i>0?'<div class="progress-line"></div>':''}<div class="progress-step"><div class="progress-dot ${cur?'current':''} ${past?'past':''}" data-id="${m.id}" style="${cur?'background:'+m.color+';border-color:'+m.color:''}">${past?'✓':''}</div></div>`;
+  }).join("");
+  progressEl.querySelectorAll(".progress-dot").forEach(d=>d.addEventListener("click",()=>{activeId=d.dataset.id;const m=MODULES.find(x=>x.id===activeId);if(m)activeLevel=m.level;renderAll();scrollTo({top:0,behavior:"smooth"});}));
+}
+
+function updateBuildTracker(){
+  const m=MODULES.find(x=>x.id===activeId);
+  if(!m)return;
+  document.getElementById("barPBU").style.width=m.pbu+"%";
+  document.getElementById("pctPBU").textContent=m.pbu+"%";
+  document.getElementById("barDP").style.width=m.dp+"%";
+  document.getElementById("pctDP").textContent=m.dp+"%";
+  const avg=Math.round((m.pbu+m.dp)/2);
+  document.getElementById("barAll").style.width=avg+"%";
+  document.getElementById("pctAll").textContent=avg+"%";
+}
+
+function renderContent(){
+  const m=MODULES.find(x=>x.id===activeId);
+  if(!m){contentEl.innerHTML="";return;}
+  const lvLabel=m.level==="beginner"?"Beginner":"Intermediate";
+  let html=`<div class="module-card"><div class="module-header"><div class="module-header-num" style="background:${m.bg};color:${m.color}">${lvLabel} · Module ${m.num}</div><h2>${esc(m.title)}</h2><p>${esc(m.sub)}</p></div><div class="module-body">`;
+  m.sections.forEach(s=>{
+    if(s.type==="intro") html+=`<div class="intro-box">${esc(s.text)}</div>`;
+    else if(s.type==="bridge") html+=`<div class="bridge-box"><div class="bridge-icon">🔗</div><div><strong>Bridge from Beginner:</strong> ${esc(s.text)}</div></div>`;
+    else if(s.type==="label") html+=`<div class="section-label">${esc(s.text)}</div>`;
+    else if(s.type==="rules") html+=s.items.map(r=>`<div class="rule-block" style="border-left-color:${m.color}"><div class="rule-title" onclick="this.parentElement.classList.toggle('open')">${esc(r.title)}</div><div class="rule-body">${esc(r.body)}</div></div>`).join("");
+    else if(s.type==="exec"){
+      const pClass=s.pillar==="pbu"?"pillar-pbu":s.pillar==="digital"?"pillar-digital":"pillar-both";
+      const pLabel=s.pillar==="pbu"?"PBU":s.pillar==="digital"?"AI Digital Products":"Both Businesses";
+      html+=`<div class="exec-box"><div class="exec-box-header"><div class="exec-icon">⚡</div><div><div class="exec-label">Execution Step</div><span class="pillar-tag ${pClass}">${pLabel}</span></div></div><div>${s.text}</div></div>`;
+    }
+    else if(s.type==="deliverables"){
+      html+=`<div class="deliverables"><div class="deliverables-title">Deliverables Checklist</div>`;
+      s.items.forEach((d,i)=>{
+        html+=`<div class="deliverable-item"><div class="deliverable-check" onclick="this.classList.toggle('checked')" id="chk-${m.id}-${i}">✓</div><div>${esc(d)}</div></div>`;
+      });
+      html+=`</div>`;
+    }
+    else if(s.type==="code") html+=`<div class="code-block">${s.lines.map(l=>esc(l)).join('\n')}</div>`;
+    else if(s.type==="resources") html+=s.items.map(r=>`<div class="resource-card"><div class="resource-top"><div><div class="resource-title">${esc(r.title)}</div><div class="resource-sub">${esc(r.sub)}</div></div><span class="tag tag-${r.tag}">${r.tag}</span></div><div class="resource-desc">${esc(r.desc)}</div><a class="resource-link" href="${r.url}" target="_blank">Open ↗</a></div>`).join("");
+  });
+  html+=`</div></div>`;
+  contentEl.innerHTML=html;
+}
+
+function renderSearch(){
+  if(!searchQuery){renderContent();return;}
+  const q=searchQuery.toLowerCase();
+  const results=[];
+  MODULES.forEach(m=>{
+    const haystack=(m.title+" "+m.sub+" "+JSON.stringify(m.sections)).toLowerCase();
+    if(haystack.includes(q)){
+      results.push(m);
+    }
+  });
+  if(!results.length){contentEl.innerHTML=`<div class="search-count">No results for "${esc(searchQuery)}"</div>`;return;}
+  contentEl.innerHTML=`<div class="search-count">${results.length} module${results.length>1?'s':''} matching "${esc(searchQuery)}"</div>`+results.map(m=>`<div class="search-result" data-id="${m.id}"><div class="search-result-header"><span class="module-btn-num" style="color:${m.color}">${m.num}</span><span class="search-result-title">${esc(m.title)}</span></div><div class="search-result-sub">${esc(m.sub)}</div></div>`).join("");
+  contentEl.querySelectorAll(".search-result").forEach(r=>r.addEventListener("click",()=>{searchQuery="";searchInput.value="";clearBtn.style.display="none";activeId=r.dataset.id;const mod=MODULES.find(x=>x.id===activeId);if(mod)activeLevel=mod.level;renderAll();scrollTo({top:0,behavior:"smooth"});}));
+}
+
+function renderAll(){
+  renderNav();renderProgress();updateBuildTracker();
+  if(searchQuery)renderSearch();else renderContent();
+  document.getElementById("tabBeg").className="level-tab"+(activeLevel==="beginner"?" active":"");
+  document.getElementById("tabInt").className="level-tab"+(activeLevel==="intermediate"?" active":"");
+}
+
+searchInput.addEventListener("input",e=>{
+  searchQuery=e.target.value.trim();
+  clearBtn.style.display=searchQuery?"inline-block":"none";
+  renderAll();
+});
+clearBtn.addEventListener("click",()=>{searchQuery="";searchInput.value="";clearBtn.style.display="none";renderAll();});
+
+renderAll();
+</script>
+</body>
+</html>
