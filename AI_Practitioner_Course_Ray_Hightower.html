@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Practitioner Course — Ray Hightower</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F5F4EF;
+  --border: #E5E3DB;
+  --border-strong: #D3D1C7;
+  --text: #2C2C2A;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --link: #185FA5;
+  --link-hover: #0C447C;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-size: 15px;
+}
+
+.shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* HEADER */
+.hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #3C3489 50%, #534AB7 100%);
+  color: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+  border-radius: 50%;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+.hero p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 600px;
+  position: relative;
+}
+.hero-meta {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  position: relative;
+}
+.hero-meta strong { color: #fff; font-weight: 500; }
+
+/* SEARCH */
+.search-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow);
+}
+.search-bar svg { color: var(--text-3); flex-shrink: 0; }
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: transparent;
+}
+.search-bar input::placeholder { color: var(--text-3); }
+.search-clear {
+  background: var(--surface-2);
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.search-clear:hover { background: var(--border); }
+
+/* PROGRESS BAR */
+.progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.progress-dot {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.progress-dot.current {
+  transform: scale(1.15);
+  border-width: 2px;
+  color: #fff;
+}
+.progress-dot.past {
+  background: #0F6E56;
+  border-color: #0F6E56;
+  color: #fff;
+}
+.progress-line {
+  width: 14px;
+  height: 1px;
+  background: var(--border);
+}
+
+/* MODULE NAV */
+.module-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+  margin-bottom: 2rem;
+}
+.module-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.module-btn:hover {
+  background: var(--surface-2);
+  transform: translateX(2px);
+}
+.module-btn.active {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-color: var(--border-strong);
+}
+.module-btn-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+.module-btn-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+/* MODULE CONTENT */
+.module-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.module-header {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.module-header-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.module-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+.module-header p {
+  font-size: 14px;
+  color: var(--text-2);
+  max-width: 720px;
+}
+
+.module-body { padding: 1.5rem 2rem 2rem; }
+
+.intro-box {
+  background: var(--surface-2);
+  border-left: 3px solid var(--border-strong);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 1.5rem;
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 1.75rem 0 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.rule-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+.rule-block:hover { border-color: var(--border-strong); }
+.rule-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.rule-body {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+/* COMPARE GRID */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+.compare-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top-width: 3px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.compare-title {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.compare-list { padding: 4px 0; }
+.compare-item {
+  font-size: 13px;
+  color: var(--text-2);
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.45;
+}
+.compare-item:last-child { border-bottom: none; }
+.compare-item::before {
+  content: '→ ';
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+/* RESOURCE CARDS */
+.resource-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  transition: all 0.15s;
+}
+.resource-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.resource-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.resource-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+.resource-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-3);
+}
+.resource-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+  margin-bottom: 6px;
+}
+.resource-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 4px 10px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+.resource-link:hover {
+  background: var(--link);
+  color: #fff;
+}
+
+/* TAGS */
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.tag-Official, .tag-Free { background: #E1F5EE; color: #085041; }
+.tag-GitHub { background: #E6F1FB; color: #0C447C; }
+.tag-Cert { background: #EEEDFE; color: #534AB7; }
+.tag-Guide { background: #FAEEDA; color: #854F0B; }
+.tag-Tool { background: #FAECE7; color: #993C1D; }
+
+/* CODE BLOCK */
+.code-block {
+  background: #1a1a1a;
+  color: #E5E3DB;
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.85;
+  overflow-x: auto;
+  border: 1px solid #333;
+}
+.code-block .arrow { color: #888780; }
+.code-block .comment { color: #888780; font-style: italic; }
+.code-block .key { color: #FAC775; }
+
+/* STEPS */
+.step-list { margin: 8px 0; }
+.step-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step-item:last-child { border-bottom: none; }
+.step-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-2);
+  flex-shrink: 0;
+}
+.step-content { flex: 1; }
+.step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.step-body {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.step-body a {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+}
+.step-body a:hover { color: var(--link-hover); text-decoration: underline; }
+
+/* ACTION BOX */
+.action-box {
+  background: linear-gradient(135deg, #FAEEDA 0%, #FAC775 100%);
+  border: 1px solid #EF9F27;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 1.5rem 0 0.5rem;
+  font-size: 13.5px;
+  color: #633806;
+  line-height: 1.55;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.action-icon {
+  width: 24px; height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.action-box strong {
+  font-weight: 700;
+  color: #412402;
+}
+
+/* SEARCH RESULTS */
+.search-results { padding: 0; }
+.search-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.search-result:hover {
+  border-color: var(--border-strong);
+  transform: translateX(3px);
+}
+.search-result-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.search-result-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+.search-result-sub {
+  font-size: 13px;
+  color: var(--text-2);
+}
+.search-count {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .shell { padding: 1rem; }
+  .hero { padding: 1.75rem 1.25rem; }
+  .hero h1 { font-size: 1.75rem; }
+  .module-header, .module-body { padding: 1.25rem; }
+  .module-nav { grid-template-columns: 1fr; }
+}
+
+/* PRINT */
+@media print {
+  body { background: white; }
+  .module-nav, .progress, .search-bar { display: none; }
+  .module-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">AI Practitioner Course</div>
+    <h1>The 10-Module Curriculum</h1>
+    <p>A practitioner-grade reference covering knowledge base architecture, prompt engineering, custom AI builds, automation, MCP servers, and SME positioning. Built for Ray Hightower.</p>
+    <div class="hero-meta">
+      <span><strong>10</strong> modules</span>
+      <span><strong>~40+</strong> hours of structured learning</span>
+      <span><strong>Searchable</strong> by topic</span>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="search" placeholder="Search across all 10 modules — try 'subagents', 'voice', 'oauth'..." autocomplete="off">
+    <button class="search-clear" id="clearBtn" style="display:none">Clear</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress" id="progress"></div>
+
+  <!-- MODULE NAV -->
+  <div class="module-nav" id="moduleNav"></div>
+
+  <!-- CONTENT -->
+  <div id="content"></div>
+
+</div>
+
+<script>
+const MODULES = [
+  {
+    id: "kb", num: "01", title: "Knowledge base architecture",
+    sub: "Structure what you upload for optimal AI retrieval and reasoning",
+    color: "#534AB7", bg: "#EEEDFE",
+    sections: [
+      { type: "intro", text: "The core problem: AI models don't read files the way humans do. They chunk, embed, and retrieve based on structure, density, and formatting signals. Most people upload messy PDFs and wonder why the AI misses things. What you upload, and how it's formatted, determines what the model can actually use." },
+      { type: "label", text: "The fundamental rules — format for retrieval, not for reading" },
+      { type: "rules", items: [
+        { title: "Markdown is the gold standard for both Claude Projects and Gemini Gems", body: "Plain .md files outperform PDFs, Word docs, and raw text in almost every knowledge retrieval scenario. The model can parse headers as semantic structure, not just visual formatting. Use # H1 for top-level concepts, ## H2 for subcategories, and short declarative paragraphs under each." },
+        { title: "Chunk by concept, not by document length", body: "A 40-page PDF uploaded as one file forces the model to search a large undifferentiated blob. Better: break it into multiple focused files — one per concept, persona, workflow, or topic. Each file should answer one question clearly. File names matter: pbu-content-voice-guide.md is retrieved more reliably than document-v3-final.pdf." },
+        { title: "Front-load the most important information", body: "Both Claude and Gemini weight content near the top of a document more heavily. Put the core definition, rule, or answer in the first 2–3 sentences of every section. Supporting detail follows. Never bury the key fact in paragraph 4." },
+        { title: "Use explicit labels and consistent terminology", body: "If your system prompt calls something a 'hook,' your knowledge base should also call it a 'hook' — not an 'opener,' 'intro line,' or 'attention grabber.' Terminology drift between your system prompt and knowledge files creates retrieval misses." },
+        { title: "Tables beat prose for structured data", body: "Comparisons, specs, rules, mappings — all of these should be in markdown tables inside your knowledge files, not written as paragraphs. The model extracts tabular data with high accuracy." },
+        { title: "Avoid scanned PDFs, images, and slides as primary knowledge", body: "Scanned PDFs are essentially images — the text inside isn't directly readable without OCR. PowerPoint slides have sparse text and layout-dependent meaning. Extract the key information into a clean markdown file first." }
+      ]},
+      { type: "label", text: "Platform differences — Claude vs Gemini" },
+      { type: "compare", items: [
+        { title: "Claude Projects", color: "#534AB7", points: ["Processes markdown natively and well", "File limit: ~20 files, ~200K tokens total", "System prompt + knowledge files work together", "Retrieves across all files per query", "Best format: .md or .txt", "PDFs work but degrade with complex layouts"] },
+        { title: "Gemini Gems", color: "#085041", points: ["Stronger Google Workspace file parsing", "Google Docs upload natively well", "Gemini 1.5 Pro has 1M token context window", "Can handle larger single files than Claude", "Best format: Google Docs or .md", "Drive integration reduces upload friction"] }
+      ]},
+      { type: "label", text: "Optimal file architecture — template" },
+      { type: "code", lines: [
+        "00-system-context.md      → Who this GPT is, what it does, rules",
+        "01-brand-voice.md         → Tone, style, language patterns",
+        "02-audience.md            → Who it's for, pain points, language",
+        "03-topic-map.md           → All topics, keywords, angles",
+        "04-content-formats.md     → Script structure, hooks, CTAs",
+        "05-examples.md            → 3–5 gold-standard examples",
+        "06-rules.md               → Never do X, always do Y"
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Anthropic — Prompt engineering docs", sub: "docs.anthropic.com", tag: "Official", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview", desc: "The 'Long context tips' and 'Give Claude a role' sections are directly applicable to knowledge base design." },
+        { title: "Anthropic cookbook — RAG and context patterns", sub: "github.com/anthropics/anthropic-cookbook", tag: "GitHub", url: "https://github.com/anthropics/anthropic-cookbook", desc: "Hands-on notebooks showing exactly how Claude retrieves and uses knowledge. The RAG section shows optimal chunking patterns." },
+        { title: "Google — Gemini prompting guide", sub: "ai.google.dev", tag: "Official", url: "https://ai.google.dev/gemini-api/docs/prompting-strategies", desc: "Covers how Gemini handles grounding, file uploads, and long-context retrieval." }
+      ]},
+      { type: "action", text: "Audit your current PBU Project/Gem knowledge files this week. Convert any PDFs or raw text dumps into numbered markdown files with clear H2 headers. Test retrieval by asking specific questions and seeing if it pulls the right section." }
+    ]
+  },
+  {
+    id: "prompt", num: "02", title: "Prompt engineering mastery",
+    sub: "Structure, advanced patterns, chain-of-thought, and multi-turn strategy",
+    color: "#0F6E56", bg: "#E1F5EE",
+    sections: [
+      { type: "intro", text: "You already know how to write prompts that work. This module is about understanding why they work — and how to architect prompts that consistently produce expert-level output. The difference between a good prompt and a great one is structural, not creative." },
+      { type: "label", text: "The architecture of a production prompt" },
+      { type: "rules", items: [
+        { title: "Role → Context → Task → Format → Constraints — in that order", body: "This is the universal prompt architecture. Role tells the model WHO to be. Context gives it what it needs to know. Task is the specific action. Format specifies the output shape. Constraints are the guardrails. Skipping any layer degrades output quality." },
+        { title: "Be specific about what you DON'T want", body: "Negative constraints ('Do NOT use bullet points,' 'Never use corporate jargon,' 'Do not include disclaimers') are more powerful than most people realize. The model has strong default patterns — overriding them explicitly produces dramatically different output." },
+        { title: "Use XML tags to structure complex prompts", body: "Both Claude and Gemini respond well to XML-style structure: <role>, <context>, <task>, <format>, <rules>. These create explicit boundaries the model uses to organize its reasoning. Claude specifically recommends this in official prompting docs." },
+        { title: "Chain-of-thought prompting — make the model show its work", body: "Adding 'Think step by step' or 'Before answering, reason through each component' forces the model to reason before concluding. Dramatically improves accuracy on complex tasks like analysis, comparison, strategy, and multi-step workflows." },
+        { title: "Few-shot examples are your most powerful tool", body: "Showing the model 2–3 examples of the exact output you want is more effective than 500 words of instruction. Format: 'Here is an example of a perfect output: [example]. Now produce the same for [new topic].' The model pattern-matches from examples faster than from rules." },
+        { title: "Multi-turn strategy — build on the conversation", body: "Don't try to get everything in one prompt. Use turn 1 for framing, turn 2 for execution, turn 3 for refinement. This matches how the model actually reasons — iteratively, not all at once." }
+      ]},
+      { type: "label", text: "Advanced patterns" },
+      { type: "rules", items: [
+        { title: "Persona stacking — combine multiple expertise domains", body: "Instead of 'You are a marketing expert,' try 'You are a direct-response copywriter with 20 years of experience who also has deep knowledge of behavioral psychology and poker strategy.' Layered personas produce more nuanced, non-generic output." },
+        { title: "Temperature and tone control through instruction", body: "You can't set temperature in the chat UI, but you can control it through language: 'Be precise and analytical' produces conservative output. 'Be creative and unconventional' produces exploratory output. 'Give me your most contrarian take' pushes the model further from its default center." },
+        { title: "Output scaffolding — define the skeleton before the content", body: "Ask the model to produce an outline or structure first, then fill it in. This prevents the model from committing to a direction in sentence 1 that constrains the rest of the response. Outline → approve → expand is the highest-quality production workflow." },
+        { title: "Meta-prompting — ask the model to improve your prompt", body: "Paste your prompt and ask: 'How would you improve this prompt to get better results?' Claude and Gemini are both excellent at diagnosing prompt weaknesses. Use this as a prompt engineering feedback loop." }
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Anthropic — Prompt engineering overview", sub: "docs.anthropic.com", tag: "Official", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview", desc: "The definitive guide. Covers role, context, examples, XML tags, chain-of-thought, and Claude-specific patterns." },
+        { title: "Google — Gemini prompting strategies", sub: "ai.google.dev", tag: "Official", url: "https://ai.google.dev/gemini-api/docs/prompting-strategies", desc: "Covers system instructions, few-shot, and grounding for Gemini models." },
+        { title: "Anthropic cookbook — Prompt engineering examples", sub: "github.com/anthropics/anthropic-cookbook", tag: "GitHub", url: "https://github.com/anthropics/anthropic-cookbook/tree/main/misc/prompt_engineering", desc: "Working notebooks showing prompt patterns in action across real use cases." },
+        { title: "OpenAI — Prompt engineering guide", sub: "platform.openai.com", tag: "Official", url: "https://platform.openai.com/docs/guides/prompt-engineering", desc: "OpenAI's official guide. Useful for understanding how ChatGPT-specific prompting differs from Claude." }
+      ]},
+      { type: "action", text: "Take your current PBU Custom GPT system prompt and restructure it using the Role → Context → Task → Format → Constraints architecture. Add 2–3 few-shot examples of perfect output. Test before and after — the quality difference will be immediate." }
+    ]
+  },
+  {
+    id: "gpts", num: "03", title: "Custom GPTs, Gems & Projects",
+    sub: "System prompt architecture, personas, versioning, and cross-platform strategy",
+    color: "#993C1D", bg: "#FAECE7",
+    sections: [
+      { type: "intro", text: "You know how to build a GPT. This module is about building one that works reliably at production quality — system prompt architecture, versioning strategy, and making a single content engine work across Claude, ChatGPT, and Gemini without rewriting everything." },
+      { type: "label", text: "System prompt architecture — the layers" },
+      { type: "rules", items: [
+        { title: "Layer 1: Identity block — who is this AI?", body: "Name, role, domain expertise, personality traits, communication style. This is the 'character sheet' and it should be 3–5 sentences max. 'You are a direct-response copywriter specializing in poker mental game content for mid-stakes online players' is more useful than 500 words of personality description." },
+        { title: "Layer 2: Context block — what does it know?", body: "This is the bridge between system prompt and knowledge files. It tells the model what knowledge files exist and when to reference them. Example: 'You have access to a brand voice guide, a topic map, and a content format library. Always check the brand voice guide before producing any content.'" },
+        { title: "Layer 3: Behavior rules — what it always/never does", body: "Explicit rules beat implicit expectations. 'Always open with a hook under 10 words. Never use the word journey. Always include a CTA at the end.' These hard rules create consistency across sessions." },
+        { title: "Layer 4: Output format — what the output looks like", body: "Specify structure: 'Every script output should follow this format: [Hook] → [Setup] → [Core Lesson] → [Example] → [CTA]. Use markdown headers for each section.' The model follows structural templates extremely well when they're explicit." },
+        { title: "Version your system prompts — always", body: "Add a version header to every system prompt: '# PBU Strategist v2.3 — Updated 2026-05-01.' When you iterate, save the old version. This lets you roll back if a change degrades quality and track what actually improved output over time." }
+      ]},
+      { type: "label", text: "Cross-platform strategy" },
+      { type: "compare", items: [
+        { title: "Claude Projects", color: "#534AB7", points: ["System prompt = 'Project Instructions'", "Knowledge = uploaded files in project", "Best for: long-form, nuanced, multi-step work", "Strength: follows complex instructions precisely", "Weakness: smaller knowledge file limits"] },
+        { title: "ChatGPT Custom GPTs", color: "#085041", points: ["System prompt = 'Instructions' field", "Knowledge = 'Knowledge' file uploads", "Best for: shareable tools, public-facing GPTs", "Strength: GPT Store distribution, web browsing", "Weakness: less precise instruction following"] },
+        { title: "Gemini Gems", color: "#993C1D", points: ["System prompt = 'Instructions' field", "Knowledge = uploaded files + Drive", "Best for: Google Workspace integration", "Strength: massive context window (1M tokens)", "Weakness: newer platform, fewer community patterns"] }
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Claude Projects documentation", sub: "docs.claude.com", tag: "Official", url: "https://docs.claude.com/en/docs/claude-ai/projects", desc: "How to set up projects, write project instructions, and structure knowledge files." },
+        { title: "ChatGPT — Creating a GPT guide", sub: "help.openai.com", tag: "Official", url: "https://help.openai.com/en/articles/8554397-creating-a-gpt", desc: "Official guide to the GPT builder, instructions field, knowledge uploads, and capabilities." },
+        { title: "Gemini Gems documentation", sub: "support.google.com", tag: "Official", url: "https://support.google.com/gemini/answer/15049465", desc: "How to create, configure, and share Gems with custom instructions and files." }
+      ]},
+      { type: "action", text: "Create a master system prompt template in markdown with all 4 layers. Port it into both your Claude Project and Gemini Gem. Test both with the same 5 prompts and compare output quality." }
+    ]
+  },
+  {
+    id: "connections", num: "04", title: "Connections, tools & function calling",
+    sub: "How integrations actually work under the hood",
+    color: "#185FA5", bg: "#E6F1FB",
+    sections: [
+      { type: "intro", text: "Connections (Claude) / Extensions (Gemini) / Actions (ChatGPT) are all the same underlying concept: giving the AI a live tool it can call during a conversation. Understanding the architecture — not just clicking 'connect' — is what separates a power user from an SME." },
+      { type: "label", text: "How connections actually work" },
+      { type: "rules", items: [
+        { title: "The AI doesn't browse — it calls APIs", body: "When you connect Google Drive, the AI isn't 'opening' Drive. It's calling a specific API endpoint that returns structured data. The model then reasons over that data. Understanding this changes how you troubleshoot — the problem is almost always in the API response, not the AI's reasoning." },
+        { title: "OAuth vs API key — two trust models", body: "Most consumer connections (Google, Slack, Asana) use OAuth — you grant permission once, a token is stored. API key connections (Zapier, custom tools) require you to manage the key. OAuth is safer and easier to revoke. Never put API keys in system prompts or knowledge files." },
+        { title: "Tools extend capabilities — they don't extend knowledge", body: "A connected Asana tool lets Claude create tasks. It doesn't make Claude know your workspace structure. Connection + context = capability. Always pair a new connection with a knowledge file that tells the AI how to use it in your specific setup." },
+        { title: "Permission scopes matter — check what each connection can actually do", body: "Every connection has a scope — read-only vs read-write, which folders, which channels. Most people never check. That's where unexpected behavior comes from. The first thing you should do after connecting any tool is verify its exact permissions." }
+      ]},
+      { type: "label", text: "Capabilities vs limitations" },
+      { type: "compare", items: [
+        { title: "What connections CAN do", color: "#185FA5", points: ["Read files from connected Drive/email", "Create/update tasks in Asana, Jira", "Search and summarize Slack threads", "Draft and send emails (with confirmation)", "Query databases via API", "Trigger webhooks and automations"] },
+        { title: "What they CANNOT do", color: "#993C1D", points: ["Browse arbitrary websites in real time", "Access files not explicitly shared", "Remember between sessions without tools", "Execute code on your machine directly", "Guarantee API call success every time", "See real-time data without a live connection"] }
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Claude Integrations overview", sub: "docs.anthropic.com", tag: "Official", url: "https://docs.anthropic.com/en/docs/claude-integrations", desc: "Complete reference for what Claude can connect to natively and permission scopes." },
+        { title: "Tool use (function calling) — Anthropic docs", sub: "docs.anthropic.com", tag: "Official", url: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview", desc: "The core concept behind all connections. Read this before touching MCP." },
+        { title: "Gemini Extensions — Google support", sub: "support.google.com", tag: "Official", url: "https://support.google.com/gemini/answer/13695044", desc: "How Gemini connects to Workspace, YouTube, Maps, and third-party tools." },
+        { title: "Anthropic cookbook — Tool use examples", sub: "github.com/anthropics/anthropic-cookbook", tag: "GitHub", url: "https://github.com/anthropics/anthropic-cookbook/tree/main/tool_use", desc: "Real working examples of Claude using tools: web search, code execution, database queries." }
+      ]},
+      { type: "action", text: "In your active Claude Project and Gemini Gem, document exactly what each connection can read vs write. Build a one-page Connection Permission Map as a reference." }
+    ]
+  },
+  {
+    id: "automation", num: "05", title: "Automation & no-code workflows",
+    sub: "Zapier, Make, and workflow design without writing code",
+    color: "#854F0B", bg: "#FAEEDA",
+    sections: [
+      { type: "intro", text: "Automation is where AI skills become business systems. A prompt is a one-time interaction. An automation is a prompt that runs without you. For a non-coder, Zapier and Make are the tools that turn your AI knowledge into hands-free operations — both at Exos and PBU." },
+      { type: "label", text: "Core automation concepts" },
+      { type: "rules", items: [
+        { title: "Trigger → Action → Filter — the universal automation pattern", body: "Every automation follows this pattern. Trigger: something happens (new email, new Zendesk ticket, time-based schedule). Action: something is done (Claude drafts a response, Asana task is created). Filter: optional logic that decides whether the action should run. Master this pattern and you can build anything." },
+        { title: "AI steps go in the middle, not at the edges", body: "The most reliable automation pattern: Tool triggers → AI processes → Tool receives output. Example: Zendesk ticket arrives (trigger) → Claude analyzes and drafts response (AI step) → Draft appears in Zendesk for human review (action). The AI is the processor, not the initiator." },
+        { title: "Always include a human review step for high-stakes outputs", body: "Never let AI send emails, publish content, or respond to customers without a human checkpoint — at least until you've validated the automation over 50+ runs. A 'draft and hold for approval' pattern is always safer than 'draft and send.'" },
+        { title: "Zapier for simple chains, Make for complex logic", body: "Zapier is faster to set up for linear A → B → C workflows. Make (formerly Integromat) handles branching, loops, error handling, and conditional logic better. Learn Zapier first (faster wins), then graduate to Make for the workflows Zapier can't handle." },
+        { title: "Version your automations like you version your prompts", body: "Name every Zap/scenario descriptively: 'PBU-Content-Pipeline-v2' not 'My Zap.' When you change the prompt inside an AI step, note what changed and why. Most automation failures happen because someone edited a prompt and didn't realize it broke the downstream output." }
+      ]},
+      { type: "label", text: "Starter automations — build these first" },
+      { type: "compare", items: [
+        { title: "Exos automations", color: "#854F0B", points: ["Zendesk ticket → Claude draft response → review queue", "Meeting transcript → AI summary → Asana tasks", "Support ticket → AI categorization → auto-route", "Weekly data pull → AI analysis → Slack summary", "New hire docs → AI checklist → onboarding Asana project"] },
+        { title: "PBU automations", color: "#534AB7", points: ["Topic from calendar → Claude scripts video → Drive", "YouTube upload → AI generates description + tags", "Competitor video alert → AI analysis → idea queue", "Weekly analytics pull → AI insights → pivot report", "Social comment mentions → AI draft reply → review"] }
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Zapier University — AI automation track", sub: "learn.zapier.com", tag: "Free", url: "https://learn.zapier.com", desc: "Structured courses on building AI-powered Zaps. Covers Claude, ChatGPT, and Gemini integrations." },
+        { title: "Make Academy — Foundations", sub: "academy.make.com", tag: "Free", url: "https://academy.make.com", desc: "Visual workflow builder for complex automations. Branching, loops, error handling." },
+        { title: "Zapier — Claude integration guide", sub: "zapier.com", tag: "Official", url: "https://zapier.com/apps/claude/integrations", desc: "All available Claude triggers and actions inside Zapier." }
+      ]},
+      { type: "action", text: "Build your first Zapier automation this week: New Asana task with a specific tag → Claude generates a first-draft script outline → Output saved to Google Drive. This takes 20 minutes and validates the entire pattern." }
+    ]
+  },
+  {
+    id: "content", num: "06", title: "AI content systems",
+    sub: "Pipelines, batching, repurposing, and scaling content for PBU",
+    color: "#3B6D11", bg: "#EAF3DE",
+    sections: [
+      { type: "intro", text: "You don't need more content ideas — you need a system that turns one idea into 10 pieces of content with one session. This module is about building the machine: batching, repurposing, and automating the pipeline from topic to published content." },
+      { type: "label", text: "The content system architecture" },
+      { type: "rules", items: [
+        { title: "One idea → one long-form → many short-form — the content tree", body: "Every content idea starts as a single long-form asset (YouTube script, blog post, newsletter). AI then breaks it into: 3–5 social posts, a thread, a quote graphic caption, a newsletter segment, and a short-form video hook. You create once, AI repurposes 5x." },
+        { title: "Batch production beats daily creation", body: "Instead of scripting one video per day, dedicate one 3-hour session per week to producing 4–5 complete scripts. Use your Custom GPT/Project for this — feed it your topic map, get all scripts in one sitting. This is where Claude Cowork or a Custom GPT pays for itself." },
+        { title: "Content voice files are your competitive moat", body: "Build a brand voice document that captures: sentence length, vocabulary preferences, emotional tone, phrases you always use, phrases you never use, and 3–5 examples of 'this is exactly my voice.' Upload this to every Project/Gem/GPT. Without it, AI content sounds like AI. With it, it sounds like you." },
+        { title: "Build a content format library, not individual prompts", body: "Instead of a prompt for each video, build a Format Library: YouTube Script Format, Twitter Thread Format, Newsletter Format, Short-Form Hook Format. Each format is a reusable template the AI applies to any topic. The topic changes — the format stays consistent." },
+        { title: "Feedback loops — grade your AI output", body: "After every content batch, grade 3–5 outputs on a 1–5 scale. Identify what the AI gets wrong consistently. Update your system prompt, knowledge files, or examples to fix it. This iterative loop is how your content system improves over time." }
+      ]},
+      { type: "label", text: "The PBU content pipeline — mapped" },
+      { type: "code", lines: [
+        "1. TOPIC SELECTION     → Topic Map → pick week's topics",
+        "2. SCRIPT BATCHING     → Custom GPT → batch 4-5 scripts",
+        "3. REVIEW & EDIT       → Refine hooks, CTAs, examples",
+        "4. REPURPOSE           → AI → social posts, threads, clips",
+        "5. SCHEDULE            → Asana calendar → assign dates",
+        "6. PUBLISH             → AI → descriptions, tags, thumbnails",
+        "7. FEEDBACK LOOP       → Performance data → next batch"
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Anthropic — Claude features reference", sub: "docs.claude.com", tag: "Official", url: "https://docs.claude.com/en/docs/claude-ai/features", desc: "Features reference covering artifacts, projects, and content workflows." },
+        { title: "YouTube Creator Academy", sub: "creatoracademy.youtube.com", tag: "Free", url: "https://creatoracademy.youtube.com", desc: "Official YouTube education on optimization, thumbnails, titles, and retention. Combine with AI production." }
+      ]},
+      { type: "action", text: "Build your Content Format Library this week: 4 templates (YouTube Script, Social Post, Thread, Newsletter Clip). Upload all 4 to your PBU Project and Gem. Batch-produce next week's content in one session using the library." }
+    ]
+  },
+  {
+    id: "mcp", num: "07", title: "MCP servers",
+    sub: "Build your own connections — architecture, hosting, and the non-coder path",
+    color: "#993556", bg: "#FBEAF0",
+    sections: [
+      { type: "intro", text: "MCP (Model Context Protocol) is Anthropic's open standard for connecting AI to external tools and data sources. Think of it as USB-C for AI. When you build an MCP server, you decide what tools Claude can call, what data it can access, and how it responds. You don't need to code from scratch — Claude Code is your coding partner." },
+      { type: "label", text: "The mental model — three components" },
+      { type: "rules", items: [
+        { title: "Host, Client, Server — the architecture", body: "Host = Claude Desktop or Claude.ai. Client = the MCP layer built into Claude that manages connections. Server = the thing you build — a small program that exposes tools, resources, or prompts. You build the server. Claude handles the rest." },
+        { title: "Three primitives — tools, resources, prompts", body: "Tools: actions Claude can trigger ('search my database,' 'create an Asana task'). Resources: read-only data ('my content calendar,' 'current Zendesk tickets'). Prompts: reusable instruction templates ('summarize this ticket,' 'draft a reply'). Every MCP server exposes some combination of these three." },
+        { title: "Local vs remote transport", body: "stdio (local): Server runs on your machine, Claude Desktop connects via standard input/output. Easiest to start — no hosting needed. Streamable HTTP (remote): Server runs in the cloud, accessible from anywhere. Start local, go remote when you need to share or run 24/7." },
+        { title: "The non-coder path is real", body: "You become the architect — you define what tools exist, what data they return, what actions they perform. Claude Code writes the implementation. Your job: specify the requirements in plain English, test the output, iterate. This is 100% achievable without traditional coding skills." }
+      ]},
+      { type: "label", text: "Your MCP learning path — in order" },
+      { type: "steps", items: [
+        { title: "Read the MCP spec — 30 minutes", body: "Short, readable. Get the mental model of host/client/server.", url: "https://modelcontextprotocol.io/introduction", linkText: "modelcontextprotocol.io/introduction" },
+        { title: "Anthropic Academy — Introduction to MCP", body: "Free, structured. Teaches tools, resources, and prompts from scratch.", url: "https://anthropic.skilljar.com/introduction-to-model-context-protocol", linkText: "anthropic.skilljar.com" },
+        { title: "Connect to existing MCP servers first", body: "Install Claude Desktop, connect to a pre-built server like Asana MCP.", url: "https://github.com/modelcontextprotocol/servers", linkText: "MCP server registry" },
+        { title: "Build the filesystem quickstart server", body: "The 'hello world' of MCP — takes under an hour with Claude Code.", url: "https://modelcontextprotocol.io/quickstart/server", linkText: "MCP quickstart" },
+        { title: "Anthropic Academy — MCP Advanced Topics", body: "Sampling, notifications, production transport. Take after Step 4.", url: "https://anthropic.skilljar.com/model-context-protocol-advanced-topics", linkText: "anthropic.skilljar.com" },
+        { title: "Build your first real MCP server — PBU content calendar", body: "Target: connect Claude to your content calendar in Google Sheets. Tools: 'get upcoming topics,' 'mark as scripted,' 'add new idea.'" }
+      ]},
+      { type: "label", text: "Key reference resources" },
+      { type: "resources", items: [
+        { title: "MCP official docs & spec", sub: "modelcontextprotocol.io", tag: "Official", url: "https://modelcontextprotocol.io", desc: "The source of truth. Quickstart guides, architecture docs, full spec." },
+        { title: "MCP server registry — pre-built servers", sub: "github.com/modelcontextprotocol/servers", tag: "GitHub", url: "https://github.com/modelcontextprotocol/servers", desc: "Every officially supported MCP server. Study these before building your own." },
+        { title: "MCP Inspector — debugging tool", sub: "github.com/modelcontextprotocol/inspector", tag: "Tool", url: "https://github.com/modelcontextprotocol/inspector", desc: "Browser-based testing and debugging for your MCP server." }
+      ]},
+      { type: "action", text: "Week 1–2: Read the spec + take the MCP course. Week 3–4: Build the filesystem quickstart. Month 2–3: Build the PBU content calendar server with Claude Code." }
+    ]
+  },
+  {
+    id: "ops", num: "08", title: "AI for business ops",
+    sub: "Exos use cases — support, reporting, Asana, and team leverage",
+    color: "#5F5E5A", bg: "#F1EFE8",
+    sections: [
+      { type: "intro", text: "This is the module that makes you the AI SME at Exos. It's not about knowing AI — it's about applying it to the specific tools, workflows, and pain points your team already has. The person who builds the first working AI workflow inside an organization owns the narrative." },
+      { type: "label", text: "The Exos AI playbook — where AI creates immediate value" },
+      { type: "rules", items: [
+        { title: "Support ticket triage — categorize before routing", body: "AI reads incoming Zendesk tickets, tags them by category (billing, technical, onboarding, complaint), priority (urgent/normal/low), and suggested team. This alone saves 15–20 minutes per shift of manual sorting. Build this with Zapier + Claude." },
+        { title: "Response drafting — AI writes, human approves", body: "For common ticket types, AI drafts a response based on your knowledge base. Human reviews and sends. Start with the top 10 most common ticket types — those account for 60–70% of volume. Build response templates in a knowledge file, let AI apply the right one." },
+        { title: "Meeting notes → action items → Asana tasks", body: "Record meetings → AI transcribes and extracts action items → Asana tasks auto-created with assignees and due dates. This workflow eliminates the 'who was supposed to do what?' problem. Use Claude Cowork or Zapier." },
+        { title: "Weekly reporting — AI-generated summaries from raw data", body: "Pull Zendesk stats, Asana completion rates, and team metrics into a sheet. AI reads the data and produces a narrative summary: 'Ticket volume increased 12% this week, driven by onboarding issues. Response time improved by 8%.' This replaces hours of manual report writing." },
+        { title: "Staff training materials — AI-assisted content creation", body: "Use AI to produce SOPs, training guides, and onboarding docs from rough notes or existing materials. AI structures, formats, and polishes. Human reviews and approves. This scales your training capability without scaling your time." },
+        { title: "Start with one workflow, prove it, then expand", body: "Don't propose 10 AI workflows at once. Pick the one with the clearest ROI (support ticket drafting is usually the winner), build it, measure the time saved, and present results. That proven win gives you credibility to propose the next 5." }
+      ]},
+      { type: "label", text: "The AI proposal framework — how to pitch to leadership" },
+      { type: "code", lines: [
+        "PROBLEM:    What manual process costs time/money today?",
+        "SOLUTION:   What AI workflow replaces or augments it?",
+        "TOOLS:      What tools are needed? (most are already in use)",
+        "ROI:        Estimated time/cost saved per week/month",
+        "RISK:       What could go wrong? How do we mitigate?",
+        "TIMELINE:   How fast can v1 be live?",
+        "PROOF:      Build a demo before proposing — show, don't tell"
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Asana Workflow Specialist Certificate", sub: "academy.asana.com", tag: "Cert", url: "https://academy.asana.com/path/workflow-specialist-certificate", desc: "The credential that makes you the Asana authority at Exos. 8–10 hrs, timed exam." },
+        { title: "Zendesk AI documentation", sub: "support.zendesk.com", tag: "Official", url: "https://support.zendesk.com/hc/en-us/articles/6457185993370", desc: "Built-in AI features in Zendesk. Know what's already available before building custom solutions." },
+        { title: "Asana AI features guide", sub: "asana.com", tag: "Official", url: "https://asana.com/product/ai", desc: "Native AI capabilities in Asana — smart status, AI-generated summaries, field recommendations." }
+      ]},
+      { type: "action", text: "This week: identify the single highest-volume manual workflow at Exos. Map it: trigger → current manual process → where AI could slot in. Draft a one-page proposal using the framework above. Build a working demo before your next 1:1." }
+    ]
+  },
+  {
+    id: "agents", num: "09", title: "Agentic AI & multi-agent systems",
+    sub: "Subagents, orchestration, delegation, and autonomous workflows",
+    color: "#534AB7", bg: "#EEEDFE",
+    sections: [
+      { type: "intro", text: "Agentic AI is where AI stops being a tool you prompt and becomes a system that operates. An agent is an AI that can plan, use tools, and execute multi-step tasks autonomously. Multi-agent systems are multiple specialized agents collaborating. This is the frontier — and it's accessible to non-coders through Claude Code and Cowork." },
+      { type: "label", text: "Core concepts" },
+      { type: "rules", items: [
+        { title: "What makes AI 'agentic' vs 'assistive'", body: "Assistive AI: you prompt, it responds, you prompt again. Agentic AI: you give a goal, it plans the steps, executes them using tools, evaluates results, and iterates. The difference is autonomy — the AI decides what to do next, not you. Claude Cowork and Claude Code are both agentic." },
+        { title: "Subagents — specialized workers for complex tasks", body: "Instead of one AI doing everything, you create specialized subagents: a 'Research Agent' that finds and summarizes information, a 'Content Agent' that writes, a 'Review Agent' that checks quality. Each subagent has a narrow focus and its own instructions. The main agent delegates to them." },
+        { title: "The Explore → Plan → Code → Commit loop", body: "Claude Code's agentic workflow follows this pattern: Explore (understand the problem), Plan (outline the approach), Code (implement), Commit (save and test). This same loop applies to any agentic workflow you design — even non-code tasks." },
+        { title: "Context management is the hard problem", body: "Agents lose context over long operations. The solution: structured handoffs between subagents (each gets a summary, not the full history), explicit state tracking (write progress to a file), and clear completion criteria (the agent knows when to stop)." },
+        { title: "Start supervised, move to autonomous", body: "Don't give agents full autonomy on day one. Start with 'do this task and show me before proceeding.' Once you trust the output pattern, reduce checkpoints. Full autonomy is earned through proven reliability." }
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Introduction to Subagents — Anthropic Academy", sub: "anthropic.skilljar.com", tag: "Free", url: "https://anthropic.skilljar.com/introduction-to-subagents", desc: "How to create and delegate to subagents in Claude Code. Context management, task delegation, specialized workflows." },
+        { title: "Introduction to Agent Skills — Anthropic Academy", sub: "anthropic.skilljar.com", tag: "Free", url: "https://anthropic.skilljar.com/introduction-to-agent-skills", desc: "Build reusable SKILL.md files Claude auto-applies to the right tasks at the right time." },
+        { title: "Claude Code in Action — Anthropic Academy", sub: "anthropic.skilljar.com", tag: "Free", url: "https://anthropic.skilljar.com/claude-code-in-action", desc: "Full course on integrating Claude Code into daily workflow. The Explore-Plan-Code-Commit loop." },
+        { title: "Anthropic — Building effective agents", sub: "anthropic.com", tag: "Guide", url: "https://www.anthropic.com/engineering/building-effective-agents", desc: "Anthropic's engineering blog post on agentic architecture patterns. The most authoritative source on how to design agent systems." }
+      ]},
+      { type: "action", text: "Take the Subagents course on Anthropic Academy. Then define 3 potential subagents for PBU: a Research Agent (finds trending poker topics), a Script Agent (produces video scripts), and a Repurpose Agent (converts scripts to social posts). Build the spec — Claude Code builds the implementation." }
+    ]
+  },
+  {
+    id: "sme", num: "10", title: "AI SME positioning",
+    sub: "How to lead, teach, and own AI at an organizational level",
+    color: "#085041", bg: "#E1F5EE",
+    sections: [
+      { type: "intro", text: "Everything in Modules 1–9 makes you capable. This module makes you the person others come to. Being an AI SME isn't about knowing the most — it's about deploying the most, teaching others effectively, and being the person who turns AI capabilities into business outcomes." },
+      { type: "label", text: "The SME playbook" },
+      { type: "rules", items: [
+        { title: "Deploy before you present — proof-of-work first", body: "Never pitch an AI idea without a working demo. Build a prototype that takes 2 hours, show it doing real work, then present. 'Here's what I built and it's saving us 3 hours/week' beats 'Here's what AI could theoretically do' every time. Deployed systems create credibility. Presentations create meetings." },
+        { title: "Document every AI win in a running log", body: "Maintain an AI Win Log: date, workflow name, what it does, estimated time saved, who it helps. This becomes your SME portfolio. Update it weekly. Share it monthly with leadership. This is the evidence trail that justifies your SME title, your raise request, and eventually your consulting practice." },
+        { title: "Teach one person per week", body: "The fastest way to own the AI narrative at Exos is to help one team member use AI better each week. Not formal training — just 'hey, let me show you how I use Claude for X.' Each person you teach becomes an advocate for AI adoption and a reference for your expertise." },
+        { title: "Own the AI tool selection conversation", body: "When leadership asks 'should we use ChatGPT or Claude or Gemini?' — you need to be the person with the answer. Not an opinion. A framework: 'For support workflows, Claude is stronger because of X. For Workspace integration, Gemini is better because of Y.' Multi-platform fluency is your differentiator." },
+        { title: "Build an AI governance framework early", body: "Before someone else creates restrictive AI policies, propose a lightweight governance framework: what AI can and can't be used for, data handling rules, human review requirements, tool approval process. The person who writes the policy shapes the culture." },
+        { title: "Connect AI wins to business metrics", body: "Leadership doesn't care about AI — they care about results. Always translate: 'AI-drafted support responses' → 'reduced average handle time by 22%.' 'AI-generated meeting summaries' → 'eliminated 4 hours/week of administrative work.' Metrics, not features." },
+        { title: "Build your external credibility in parallel", body: "LinkedIn posts about AI wins. Your credential stack. Speaking at team meetings. Eventually, content on PBU about AI in operations. Every internal win at Exos is also external content for your personal brand." }
+      ]},
+      { type: "label", text: "Credential stack — the complete picture" },
+      { type: "code", lines: [
+        "Anthropic Academy → Claude 101, AI Fluency, Cowork, Skills, MCP",
+        "Google            → AI Professional Cert, Workspace Gemini Badge",
+        "OpenAI            → AI Foundations (when public), Academy",
+        "Asana             → AI Skills Badge, Workflow Specialist, Admin",
+        "Zapier            → AI Automation certification",
+        "Target cert       → Claude Certified Architect — Foundations (CCA-F)"
+      ]},
+      { type: "label", text: "Primary sources" },
+      { type: "resources", items: [
+        { title: "Claude Certified Architect — exam prep", sub: "claudecertifications.com", tag: "Cert", url: "https://claudecertifications.com", desc: "Study guides, practice questions, and 12-week study plan for the CCA-F professional certification." },
+        { title: "Anthropic — Enterprise AI deployment guide", sub: "anthropic.com", tag: "Guide", url: "https://www.anthropic.com/enterprise", desc: "How organizations deploy Claude at scale. Useful for framing your internal AI program." },
+        { title: "AI Fluency: Framework & Foundations — Anthropic Academy", sub: "anthropic.skilljar.com", tag: "Free", url: "https://anthropic.skilljar.com/ai-fluency-framework-foundations", desc: "The 4D Framework (Delegation, Description, Discernment, Diligence). Use this as your teaching framework when training others." }
+      ]},
+      { type: "action", text: "This week: start your AI Win Log. Create a simple doc with 4 columns: Date, Workflow, Impact, Evidence. Log every AI workflow you build or improve. By month 3, this document becomes your formal SME portfolio." }
+    ]
+  }
+];
+
+let activeId = "kb";
+let searchQuery = "";
+
+const moduleNav = document.getElementById("moduleNav");
+const progress = document.getElementById("progress");
+const content = document.getElementById("content");
+const searchInput = document.getElementById("search");
+const clearBtn = document.getElementById("clearBtn");
+
+function renderModuleNav() {
+  moduleNav.innerHTML = MODULES.map(m => `
+    <button class="module-btn ${m.id === activeId ? 'active' : ''}" data-id="${m.id}" style="${m.id === activeId ? `border-left-color: ${m.color}` : ''}">
+      <span class="module-btn-num" style="${m.id === activeId ? `color: ${m.color}` : ''}">${m.num}</span>
+      <span class="module-btn-title">${m.title}</span>
+    </button>
+  `).join("");
+  moduleNav.querySelectorAll(".module-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeId = btn.dataset.id;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+}
+
+function renderProgress() {
+  const currentIdx = MODULES.findIndex(m => m.id === activeId);
+  progress.innerHTML = MODULES.map((m, i) => {
+    const isCurrent = m.id === activeId;
+    const isPast = i < currentIdx;
+    const dotStyle = isCurrent ? `background:${m.color};border-color:${m.color}` : "";
+    return `
+      ${i > 0 ? '<div class="progress-line"></div>' : ''}
+      <div class="progress-step">
+        <div class="progress-dot ${isCurrent ? 'current' : ''} ${isPast ? 'past' : ''}" data-id="${m.id}" style="${dotStyle}">
+          ${isPast ? '✓' : m.num}
+        </div>
+      </div>
+    `;
+  }).join("");
+  progress.querySelectorAll(".progress-dot").forEach(dot => {
+    dot.addEventListener("click", () => {
+      activeId = dot.dataset.id;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function renderSection(s, modColor) {
+  if (s.type === "intro") {
+    return `<div class="intro-box" style="border-left-color:${modColor}">${escapeHtml(s.text)}</div>`;
+  }
+  if (s.type === "label") {
+    return `<div class="section-label">${escapeHtml(s.text)}</div>`;
+  }
+  if (s.type === "rules") {
+    return s.items.map(r => `
+      <div class="rule-block" style="border-left-color:${modColor}">
+        <div class="rule-title">${escapeHtml(r.title)}</div>
+        <div class="rule-body">${escapeHtml(r.body)}</div>
+      </div>
+    `).join("");
+  }
+  if (s.type === "compare") {
+    return `<div class="compare-grid">${s.items.map(c => `
+      <div class="compare-card" style="border-top-color:${c.color}">
+        <div class="compare-title" style="color:${c.color}">${escapeHtml(c.title)}</div>
+        <div class="compare-list">
+          ${c.points.map(p => `<div class="compare-item">${escapeHtml(p)}</div>`).join("")}
+        </div>
+      </div>
+    `).join("")}</div>`;
+  }
+  if (s.type === "code") {
+    return `<div class="code-block">${s.lines.map(l => {
+      let formatted = escapeHtml(l);
+      formatted = formatted.replace(/→/g, '<span class="arrow">→</span>');
+      formatted = formatted.replace(/^([A-Z][A-Z]+:)/g, '<span class="key">$1</span>');
+      return formatted;
+    }).join("<br>")}</div>`;
+  }
+  if (s.type === "steps") {
+    return `<div class="step-list">${s.items.map((step, i) => `
+      <div class="step-item">
+        <div class="step-num">${i + 1}</div>
+        <div class="step-content">
+          <div class="step-title">${escapeHtml(step.title)}</div>
+          <div class="step-body">${escapeHtml(step.body)} ${step.url ? `<a href="${step.url}" target="_blank" rel="noopener">${escapeHtml(step.linkText)} ↗</a>` : ''}</div>
+        </div>
+      </div>
+    `).join("")}</div>`;
+  }
+  if (s.type === "resources") {
+    return s.items.map(r => `
+      <div class="resource-card">
+        <div class="resource-top">
+          <div>
+            <div class="resource-title">${escapeHtml(r.title)}</div>
+            <div class="resource-sub">${escapeHtml(r.sub)}</div>
+          </div>
+          <span class="tag tag-${r.tag}">${escapeHtml(r.tag)}</span>
+        </div>
+        <div class="resource-desc">${escapeHtml(r.desc)}</div>
+        <a href="${r.url}" target="_blank" rel="noopener" class="resource-link">
+          Open resource <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </a>
+      </div>
+    `).join("");
+  }
+  if (s.type === "action") {
+    return `<div class="action-box">
+      <div class="action-icon">⚡</div>
+      <div><strong>Immediate action:</strong> ${escapeHtml(s.text)}</div>
+    </div>`;
+  }
+  return "";
+}
+
+function renderModule() {
+  const m = MODULES.find(mod => mod.id === activeId);
+  if (!m) return;
+  content.innerHTML = `
+    <div class="module-card">
+      <div class="module-header" style="background: linear-gradient(to right, ${m.bg}, transparent); border-bottom-color: ${m.color}30">
+        <div class="module-header-num" style="background:${m.bg};color:${m.color}">MODULE ${m.num}</div>
+        <h2 style="color:${m.color}">${escapeHtml(m.title)}</h2>
+        <p>${escapeHtml(m.sub)}</p>
+      </div>
+      <div class="module-body">
+        ${m.sections.map(s => renderSection(s, m.color)).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderSearch() {
+  const q = searchQuery.toLowerCase().trim();
+  if (!q) { renderModule(); return; }
+
+  const matches = [];
+  MODULES.forEach(m => {
+    const matchedSections = [];
+    if (m.title.toLowerCase().includes(q) || m.sub.toLowerCase().includes(q)) {
+      matchedSections.push({ type: "module-match" });
+    }
+    m.sections.forEach(s => {
+      if (s.text && s.text.toLowerCase().includes(q)) matchedSections.push(s);
+      if (s.items) {
+        s.items.forEach(it => {
+          const blob = JSON.stringify(it).toLowerCase();
+          if (blob.includes(q)) matchedSections.push({ type: "item-match", item: it });
+        });
+      }
+      if (s.lines && s.lines.some(l => l.toLowerCase().includes(q))) matchedSections.push(s);
+    });
+    if (matchedSections.length > 0) matches.push({ module: m, matches: matchedSections });
+  });
+
+  if (matches.length === 0) {
+    content.innerHTML = `<div class="search-count">No matches for "${escapeHtml(searchQuery)}"</div>`;
+    return;
+  }
+
+  content.innerHTML = `
+    <div class="search-count">${matches.length} module${matches.length !== 1 ? "s" : ""} match "${escapeHtml(searchQuery)}" — click to open</div>
+    ${matches.map(({ module: m, matches: mm }) => `
+      <div class="search-result" data-id="${m.id}" style="border-left: 3px solid ${m.color}">
+        <div class="search-result-header">
+          <span class="tag" style="background:${m.bg};color:${m.color}">MODULE ${m.num}</span>
+          <span class="search-result-title">${escapeHtml(m.title)}</span>
+        </div>
+        <div class="search-result-sub">${escapeHtml(m.sub)} — ${mm.length} match${mm.length !== 1 ? "es" : ""}</div>
+      </div>
+    `).join("")}
+  `;
+  content.querySelectorAll(".search-result").forEach(r => {
+    r.addEventListener("click", () => {
+      activeId = r.dataset.id;
+      searchQuery = "";
+      searchInput.value = "";
+      clearBtn.style.display = "none";
+      renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+}
+
+function renderAll() {
+  renderModuleNav();
+  renderProgress();
+  if (searchQuery.trim()) {
+    moduleNav.style.display = "none";
+    progress.style.display = "none";
+    renderSearch();
+  } else {
+    moduleNav.style.display = "grid";
+    progress.style.display = "flex";
+    renderModule();
+  }
+}
+
+searchInput.addEventListener("input", e => {
+  searchQuery = e.target.value;
+  clearBtn.style.display = searchQuery ? "block" : "none";
+  renderAll();
+});
+clearBtn.addEventListener("click", () => {
+  searchQuery = "";
+  searchInput.value = "";
+  clearBtn.style.display = "none";
+  renderAll();
+});
+
+renderAll();
+</script>
+</body>
+</html>
